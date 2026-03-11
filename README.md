@@ -2,6 +2,7 @@
 This repository is dedicated to the exploration of fine-tuning foundation time series models on decsison loss. Specifically, this repository evaluates performance using MOMENT and cvxpylayers to solve a battery arbitrage problem using the ISO-NE NEMA location marginal pricing dataset.
 
 ## Project Structure
+```text
 battery-arbitrage-dfl/
 ├── configs/                  # YAML files for hyperparameters (model, data, optimizer)
 ├── data/                     
@@ -25,7 +26,7 @@ battery-arbitrage-dfl/
 ├── .gitignore
 ├── README.md
 └── pyproject.toml            # Dependencies and package metadata
-
+```
 ## Project Resouces
 * [Overleaf Project](https://www.overleaf.com/project/6998cbc5d26b3d55e09f59fb)
 
