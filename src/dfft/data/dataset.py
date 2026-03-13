@@ -19,7 +19,7 @@ class NEMADataset(Dataset):
         pad_start_idx = max(0, start_idx - self.input_len)
         
         #Select relevant data
-        self.data = df.loc[pad_start_idx : end_idx, 'RT_LMP'].values.reshape(-1,1)
+        self.data = df.loc[pad_start_idx : end_idx, 'RT_LMP'].values.reshape(-1,1) #Add training dimension: shape (timestamps, 1)
         
         self.data = torch.tensor(self.data, dtype=torch.float32)
 
@@ -30,6 +30,6 @@ class NEMADataset(Dataset):
         x = self.data[idx : idx + self.input_len]
         y = self.data[idx + self.input_len : idx + self.input_len + self.output_len]
         
-        x = x.transpose(0, 1)
-        y = y.squeeze(-1)
+        x = x.transpose(0, 1) #transpose to MOMENT input shape (channel (1), timestamps)
+        y = y.squeeze(-1) #flatten back to shape (timestamps)
         return x, y

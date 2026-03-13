@@ -7,14 +7,20 @@ name = "decision-focused-fine-tuning"
 version = "0.1.0"
 description = "Fine-tuning foundation time series models on decision loss for battery arbitrage"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
     "torch>=2.0.0",
     "pandas>=2.0.0",
+    "numpy >= 1.22.4",
     "pyarrow>=14.0.0",      
     "openpyxl>=3.1.0",     
     "pyyaml>=6.0",          
-    "cvxpy>=1.3.0",
-    "momentfm>=0.1.0",      
+    "cvxpy>=1.7.4",
+    #"diffcp >= 1.1.0", #need c++ complier
+    #"momentfm>=0.1.0",   #not sure if this is correct
     "jupyter>=1.0.0"        
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["dfft*"]

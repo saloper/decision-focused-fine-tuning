@@ -1,7 +1,7 @@
 """
 Module Name: process_data.py
 Description: used to join together ISO-NE spreadsheets and convert data to EST
-Usage: scripts/python process_dara.py
+Usage: scripts/python process_data.py
 """
 
 import pandas as pd

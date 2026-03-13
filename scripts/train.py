@@ -1,15 +1,7 @@
 import yaml
 import argparse
-from src.utils.paths import get_path
-from src.data.dataset import NEMADataset
-
-def load_config(filename):
-    config_path = get_path(f"configs/{filename}")
-
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file) 
-        
-    return config
+from dfft.utils.files import get_path, get_config
+from dfft.data.dataset import NEMADataset
 
 def main():
     parser = argparse.ArgumentParser(description="Train a decision-focused model")
@@ -19,12 +11,12 @@ def main():
         default="baseline.yaml", 
     )
     args = parser.parse_args()
-    config = load_config(args.config)
+    config = get_config(args.config)
 
     print(f"Starting Experiment: {config['experiment_name']}")
     
     train = NEMADataset(
-        file = get_path(config['paths']['processed_input_path']) / config['paths']['input_filename'],
+        file = config['paths']['processed_input_path'] / config['paths']['input_filename'],
         start_date = config['data']['train_start_date'],
         end_date = config['data']['train_end_date'],
         input_len = config['data']['input_len'],
