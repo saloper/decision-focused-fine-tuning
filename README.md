@@ -7,30 +7,25 @@ This repository is dedicated to the exploration of fine-tuning foundation time s
 
 ## Project Structure
 ```text
-├── configs/ 
-    └──baseline.yaml          # YAML files for hyperparameters (model, data, optimizer)
-├── data/                     
-│   └──raw/                   # Original NEMA ISO-NE data
-    └──processed/             # Combined NEMA ISO-NE data
-├── notebooks/                # Jupyter notebooks for EDA, plotting, and quick tests
-├── scripts/                  # Executable entry points
-│   ├── train.py              # Main training loop script
-│   ├── evaluate.py           # Evaluation and backtesting script
-│   └── process_data.py       # Script to fetch and prep the NEMA data
-├── src/                      
-│   ├── data/
-│   │   └── dataset.py        # PyTorch Dataset classe
-│   ├── models/
-│   │   ├── predictive.py     # MOMENT wrappers and other time-series architectures
-│   │   └── decision.py       # CVXPY formulations and CvxpyLayer wrappers
-│   ├── training/
-│   │   ├── losses.py         # Custom decision-focused loss (regret) functions
-│   │   └── engine.py         # PyTorch train steps
-│   └── utils/
-│       └── paths.py          # Get root path for project
 ├── .gitignore
 ├── README.md
-└── pyproject.toml            # Dependencies and package metadata
+├── pyproject.toml
+├── configs/
+│   └── baseline.yaml          # Configuration files for training and data processing
+├── data/
+│   └── processed/
+│       └── NEMA_LMP.parquet   # Processed datasets 
+├── scripts/
+│   ├── process_data.py        # Script for data processing pipelines
+│   └── train.py               # Main training script
+└── src/
+    └── dfft/                  # Main package source code
+        ├── data/
+        │   └── dataset.py     # PyTorch Dataset and DataLoader definitions
+        ├── models/
+        │   └── moment.py      # Model architectures and forward passes
+        └── utils/
+            └── files.py       # Helper functions for file management
 ```
 ## Project Resouces
 * [Overleaf Project](https://www.overleaf.com/project/6998cbc5d26b3d55e09f59fb)
