@@ -1,20 +1,25 @@
 ## Summary
 This repository is dedicated to the exploration of fine-tuning foundation time series models on decsison loss. Specifically, this repository evaluates performance using MOMENT and cvxpylayers to solve a battery arbitrage problem using the ISO-NE NEMA location marginal pricing dataset.
 
+## Build Instructions
+* Clone Repo
+* Install as live package with pip install -e .
+
 ## Project Structure
 ```text
-battery-arbitrage-dfl/
-├── configs/                  # YAML files for hyperparameters (model, data, optimizer)
+├── configs/ 
+    └──baseline.yaml          # YAML files for hyperparameters (model, data, optimizer)
 ├── data/                     
 │   └──raw/                   # Original NEMA ISO-NE data
+    └──processed/             # Combined NEMA ISO-NE data
 ├── notebooks/                # Jupyter notebooks for EDA, plotting, and quick tests
 ├── scripts/                  # Executable entry points
 │   ├── train.py              # Main training loop script
 │   ├── evaluate.py           # Evaluation and backtesting script
-│   └── download_data.py      # Script to fetch and prep the NEMA data
+│   └── process_data.py       # Script to fetch and prep the NEMA data
 ├── src/                      
 │   ├── data/
-│   │   └── dataset.py        # PyTorch Dataset and DataLoader classes
+│   │   └── dataset.py        # PyTorch Dataset classe
 │   ├── models/
 │   │   ├── predictive.py     # MOMENT wrappers and other time-series architectures
 │   │   └── decision.py       # CVXPY formulations and CvxpyLayer wrappers
@@ -22,7 +27,7 @@ battery-arbitrage-dfl/
 │   │   ├── losses.py         # Custom decision-focused loss (regret) functions
 │   │   └── engine.py         # PyTorch train steps
 │   └── utils/
-│       └── metrics.py        # Financial metrics (total profit, ROI)
+│       └── paths.py          # Get root path for project
 ├── .gitignore
 ├── README.md
 └── pyproject.toml            # Dependencies and package metadata

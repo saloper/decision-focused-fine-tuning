@@ -1,3 +1,9 @@
 #To Update
 #Raw Data
 data/raw
+
+#Build Files
+*.egg-info/
+
+#Cache
+__pycache__*

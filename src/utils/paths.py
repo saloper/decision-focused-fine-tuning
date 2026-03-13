@@ -10,5 +10,4 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 def get_path(relative_path_str):
-
     return PROJECT_ROOT / relative_path_str
