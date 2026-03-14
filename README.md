@@ -1,9 +1,51 @@
 ## Summary
 This repository is dedicated to the exploration of fine-tuning foundation time series models on decsison loss. Specifically, this repository evaluates performance using MOMENT and cvxpylayers to solve a battery arbitrage problem using the ISO-NE NEMA location marginal pricing dataset.
 
-## Build Instructions
-* Clone Repo
-* Install as live package with pip install -e .
+
+## Instructions for Coding
+
+### Environment Setup
+
+1. Clone this repository.
+2. Create and activate a conda environment:
+    ```bash
+    conda create -n dfft python=3.11
+    conda activate dfft
+    ```
+3. Install PyTorch with CUDA support:
+    ```bash
+    conda install pytorch torchvision pytorch-cuda -c pytorch -c nvidia
+    ```
+4. Install all other dependencies and the package itself:
+    ```bash
+    pip install -e .
+    ```
+
+---
+
+## Adding a New Model: What to Change
+
+To add a new model (or a new variant), update the following locations:
+
+1. **`src/dfft/training/model_registry.py`**
+    - Add a new `elif` block in `get_model` for your model/variant.
+    - Define its default hyperparameters and set the `trainable` flag as needed.
+    - Return the correct model instance and trainable flag.
+
+2. **`src/dfft/models/`**
+    - Implement your new model class (e.g., `MyNewForecaster`) in a new or existing file.
+    - Ensure it follows the same API as `BaseForecaster`.
+
+3. **`configs/baseline.yaml` or your config file**
+    - Add any model-specific parameters under the appropriate section.
+
+4. **(Optional) `scripts/run.py`**
+    - If you want to expose your model as a command-line option, add it to the parser's choices or documentation.
+
+5. **(Optional) `src/dfft/training/train.py`**
+    - If your model requires special handling in the training loop, add logic as needed.
+
+---
 
 ## Project Structure
 ```text

@@ -3,14 +3,16 @@ import torch
 from torch.utils.data import Dataset
 
 class NEMADataset(Dataset):
-    def __init__(self, file, start_date, end_date, input_len=512, output_len=24):
+    def __init__(self, file, start_date=None, end_date=None, input_len=512, output_len=24):
         
         self.input_len = input_len
         self.output_len = output_len
         
         #Load the data
         df = pd.read_parquet(file, engine='pyarrow')
-        
+        start_date = start_date if start_date else df['Timestamp'].min()
+        end_date = end_date if end_date else df['Timestamp'].max()
+
         #Find indices for dates
         start_idx = df[df['Timestamp'] >= start_date].index[0]
         end_idx = df[df['Timestamp'] <= end_date].index[-1]
