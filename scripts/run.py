@@ -84,7 +84,7 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     )
 
 if __name__ == "__main__":
-    model = "moment-small"
+    model = "moment-small-lora"
     dataset = "NEMA"
     config = "configs/baseline.yaml"
     main(config, model, dataset)

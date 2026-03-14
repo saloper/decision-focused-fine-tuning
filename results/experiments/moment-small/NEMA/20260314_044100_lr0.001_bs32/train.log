@@ -6,3 +6,5 @@
 2026-03-14 04:41:01,077 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
 2026-03-14 04:41:01,078 - INFO - Enabling gradient checkpointing.
 2026-03-14 04:41:01,388 - INFO - Model is not trainable. Skipping training/validation. Running test only.
+2026-03-14 04:41:52,247 - INFO - Saving predictions...
+2026-03-14 04:41:53,677 - INFO - All outputs saved to: results/experiments/moment-small\NEMA\20260314_044100_lr0.001_bs32. Experiment complete.

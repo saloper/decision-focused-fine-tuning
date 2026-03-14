@@ -1,0 +1,29 @@
+2026-03-14 13:53:51,125 - INFO - Starting Experiment: baseline
+2026-03-14 13:53:51,125 - INFO - Run directory created at: results/experiments/moment-small-finetuned\NEMA\20260314_135351_lr0.001_bs32
+2026-03-14 13:53:51,325 - INFO - Using device: cuda
+2026-03-14 13:53:57,777 - INFO - Initializing moment-small-finetuned...
+2026-03-14 13:53:58,650 - INFO - Setting d_model to 512
+2026-03-14 13:54:00,500 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-03-14 13:54:00,500 - INFO - Enabling gradient checkpointing.
+2026-03-14 13:54:07,807 - INFO - Starting training for 50 epochs...
+2026-03-14 13:55:19,435 - INFO - Epoch 001/50 | Train MSE: 969.9002 MAE: 14.6402 | Val MSE: 1206.9507 MAE: 12.8256
+2026-03-14 13:55:22,168 - INFO - --> Validation MSE improved to 1206.9507. Saved best model.
+2026-03-14 13:56:26,277 - INFO - Epoch 002/50 | Train MSE: 888.0534 MAE: 14.0059 | Val MSE: 1201.2622 MAE: 12.5361
+2026-03-14 13:56:27,345 - INFO - --> Validation MSE improved to 1201.2622. Saved best model.
+2026-03-14 13:57:34,571 - INFO - Epoch 003/50 | Train MSE: 860.1170 MAE: 13.8060 | Val MSE: 1200.0210 MAE: 12.8688
+2026-03-14 13:57:35,201 - INFO - --> Validation MSE improved to 1200.0210. Saved best model.
+2026-03-14 13:58:41,906 - INFO - Epoch 004/50 | Train MSE: 846.5263 MAE: 13.6971 | Val MSE: 1206.4740 MAE: 13.0305
+2026-03-14 13:59:47,912 - INFO - Epoch 005/50 | Train MSE: 828.1287 MAE: 13.5952 | Val MSE: 1206.5253 MAE: 13.0335
+2026-03-14 14:00:54,943 - INFO - Epoch 006/50 | Train MSE: 816.4348 MAE: 13.5376 | Val MSE: 1205.5052 MAE: 12.8658
+2026-03-14 14:02:02,672 - INFO - Epoch 007/50 | Train MSE: 812.2183 MAE: 13.4718 | Val MSE: 1207.6237 MAE: 12.9842
+2026-03-14 14:03:10,726 - INFO - Epoch 008/50 | Train MSE: 805.7828 MAE: 13.4630 | Val MSE: 1209.1466 MAE: 13.0468
+2026-03-14 14:04:18,920 - INFO - Epoch 009/50 | Train MSE: 798.6237 MAE: 13.4408 | Val MSE: 1207.4309 MAE: 12.7690
+2026-03-14 14:05:23,082 - INFO - Epoch 010/50 | Train MSE: 793.7268 MAE: 13.3849 | Val MSE: 1209.9950 MAE: 12.8632
+2026-03-14 14:06:27,075 - INFO - Epoch 011/50 | Train MSE: 785.2522 MAE: 13.3658 | Val MSE: 1209.9071 MAE: 12.8811
+2026-03-14 14:07:31,814 - INFO - Epoch 012/50 | Train MSE: 782.2022 MAE: 13.3396 | Val MSE: 1207.9782 MAE: 13.1343
+2026-03-14 14:08:36,033 - INFO - Epoch 013/50 | Train MSE: 781.7296 MAE: 13.3447 | Val MSE: 1212.9091 MAE: 12.9485
+2026-03-14 14:08:36,033 - INFO - Early stopping triggered after 10 epochs with no improvement.
+2026-03-14 14:08:36,033 - INFO - Loading best model for testing...
+2026-03-14 14:09:42,790 - INFO - Final Test Metrics | MSE: 1333.8464 | MAE: 19.3232
+2026-03-14 14:09:42,825 - INFO - Saving predictions...
+2026-03-14 14:09:48,250 - INFO - All outputs saved to: results/experiments/moment-small-finetuned\NEMA\20260314_135351_lr0.001_bs32. Experiment complete.

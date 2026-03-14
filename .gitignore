@@ -2,6 +2,9 @@
 #Raw Data
 data/raw
 
+#Model Checkpoints
+*.pt 
+
 #Build Files
 *.egg-info/
 

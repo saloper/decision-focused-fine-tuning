@@ -23,7 +23,7 @@ class MOMENTForecaster(BaseForecaster):
                 'forecast_horizon': output_len,
                 'head_dropout': 0.1,
                 'weight_decay': 0,
-                'freeze_encoder': True,  # Freeze the patch embedding layer
+                'freeze_encoder': freeze_linear,  # Freeze the patch embedding layer
                 'freeze_embedder': True, # Freeze the transformer encoder
                 'freeze_head': freeze_linear,              # Unfreeze the linear forecasting head if asked
             }
