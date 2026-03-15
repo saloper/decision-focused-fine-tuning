@@ -11,7 +11,7 @@ from momentfm.utils.utils import control_randomness
 from .base import BaseForecaster
 
 class MOMENTForecaster(BaseForecaster):
-    def __init__(self, input_len: int, output_len: int, model_name: str = "AutonLab/MOMENT-1-small", freeze_linear: bool = True, random_seed: int = 13):
+    def __init__(self, input_len: int, output_len: int, model_name: str = "AutonLab/MOMENT-1-small", freeze_linear: bool = True, freeze_encoder: bool = True, random_seed: int = 13):
         super().__init__(input_len, output_len)
         control_randomness(seed=random_seed)
 
@@ -23,7 +23,7 @@ class MOMENTForecaster(BaseForecaster):
                 'forecast_horizon': output_len,
                 'head_dropout': 0.1,
                 'weight_decay': 0,
-                'freeze_encoder': freeze_linear,  # Freeze the patch embedding layer
+                'freeze_encoder': freeze_encoder,  # Freeze the patch embedding layer
                 'freeze_embedder': True, # Freeze the transformer encoder
                 'freeze_head': freeze_linear,              # Unfreeze the linear forecasting head if asked
             }

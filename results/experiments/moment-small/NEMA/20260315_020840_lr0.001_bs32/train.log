@@ -1,0 +1,10 @@
+2026-03-15 02:08:40,145 - INFO - Starting Experiment: baseline
+2026-03-15 02:08:40,186 - INFO - Run directory created at: results/experiments/moment-small\NEMA\20260315_020840_lr0.001_bs32
+2026-03-15 02:08:40,244 - INFO - Using device: cuda
+2026-03-15 02:08:47,497 - INFO - Initializing moment-small...
+2026-03-15 02:08:48,695 - INFO - Setting d_model to 512
+2026-03-15 02:08:50,996 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-03-15 02:08:50,998 - INFO - Enabling gradient checkpointing.
+2026-03-15 02:08:51,894 - INFO - Model is not trainable. Skipping training/validation. Running test only.
+2026-03-15 02:09:48,635 - INFO - Saving predictions...
+2026-03-15 02:09:50,261 - INFO - All outputs saved to: results/experiments/moment-small\NEMA\20260315_020840_lr0.001_bs32. Experiment complete.

@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+from xml.parsers.expat import model
 import yaml
 import datetime
 import shutil
@@ -84,7 +85,14 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     )
 
 if __name__ == "__main__":
-    model = "moment-small-lora"
     dataset = "NEMA"
     config = "configs/baseline.yaml"
-    main(config, model, dataset)
+    model_size = ["moment-small", "moment-base", "moment-large"]
+    model_features = ["", "-finetuned", "-lora"]
+    model_list = []
+    for size in model_size:
+        for feature in model_features:
+            model_list.append(size + feature)
+    print("Running experiments for models:", model_list)
+    for model in model_list:
+        main(config, model, dataset)

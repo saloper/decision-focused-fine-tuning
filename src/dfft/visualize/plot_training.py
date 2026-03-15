@@ -14,7 +14,7 @@ sns.set(style="whitegrid", font_scale=1.2)
 COLORS = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:brown", "tab:pink", "tab:gray", "tab:olive", "tab:cyan"]
 
 
-def plot_experiments(experiment_dirs, metrics=("mse", "mae"), save_path=None, show=True):
+def plot_experiments(experiment_dirs, metrics=["mse", "mae"], save_path=None, show=True):
     """
     Args:
         experiment_dirs: list of experiment run directories (each should contain results.json)
@@ -26,6 +26,20 @@ def plot_experiments(experiment_dirs, metrics=("mse", "mae"), save_path=None, sh
     color_idx = 0
     legend_handles = []
 
+    # Find the max last epoch across all experiments for x-axis placement of test metrics
+    max_epoch = 0
+    train_lengths = {}
+    for exp_dir in experiment_dirs:
+        results_path = os.path.join(exp_dir, "results.json")
+        if not os.path.exists(results_path):
+            continue
+        results = load_results(results_path)
+        for metric in metrics:
+            train_vals = results.get("training_history", {}).get("train", {}).get(metric, [])
+            if len(train_vals) > max_epoch:
+                max_epoch = len(train_vals)
+            train_lengths[(exp_dir, metric)] = len(train_vals)
+
     for exp_dir in experiment_dirs:
         results_path = os.path.join(exp_dir, "results.json")
         if not os.path.exists(results_path):
@@ -33,20 +47,24 @@ def plot_experiments(experiment_dirs, metrics=("mse", "mae"), save_path=None, sh
             continue
         results = load_results(results_path)
         model_path = exp_dir.split('\\')
-        print(model_path)
         dataset_name = model_path[-2]
         model_name = model_path[-3]
-        exp_name = dataset_name + " " + model_name  # Use last two parts of path for name
+        exp_name = dataset_name
+        trainable = results.get("trainable", True) if "trainable" in results else True
         for i, metric in enumerate(metrics):
             color = COLORS[color_idx % len(COLORS)]
-            # Plot train
-            train_vals = results["training_history"]["train"][metric]
-            h_train, = plt.plot(train_vals, label=f"Train {metric.upper()}", color=color, linestyle="-")
-            # Plot val
-            val_vals = results["training_history"]["val"][metric]
-            h_val, = plt.plot(val_vals, label=f"Val {metric.upper()}", color=color, linestyle=":")
-            if i == 0:
-                legend_handles.extend([h_train, h_val])
+            if trainable:
+                train_vals = results["training_history"]["train"][metric]
+                h_train, = plt.plot(train_vals, label=f"{model_name} Train {metric.upper()}", color=color, linestyle="-")
+                val_vals = results["training_history"]["val"][metric]
+                h_val, = plt.plot(val_vals, label=f"{model_name} - Val {metric.upper()}", color=color, linestyle=":")
+                if i == 0:
+                    legend_handles.extend([h_train, h_val])
+            # Plot test metric as a cross at the end of the longest run
+            test_val = results.get("test_results", {}).get(metric, None)
+            if test_val is not None:
+                plt.scatter([max_epoch-1], [test_val],
+                            color=color, marker='x', s=100, label=f"{model_name} Test {metric.upper()}")
             color_idx += 1
 
     plt.xlabel("Epoch")
@@ -61,21 +79,32 @@ def plot_experiments(experiment_dirs, metrics=("mse", "mae"), save_path=None, sh
 
 
 
-def example_usage(model_name="moment-small-finetuned", dataset_name="NEMA", all_experiments=False):
+def example_usage(model_name=["moment-small-finetuned"], dataset_name="NEMA", all_experiments=False):
     """
     By default, plots the latest experiment for the given model/dataset.
     Set all_experiments=True to plot all runs for that model/dataset.
     """
     if all_experiments:
-        experiment_dirs = get_experiment_dirs(model_name, dataset_name)
+        experiment_dirs = []
+        for m in model_name:
+            experiment_dirs.extend(get_experiment_dirs(m, dataset_name))
     else:
-        latest = get_latest_experiment_dir(model_name, dataset_name)
-        experiment_dirs = [latest] if latest else []
+        experiment_dirs = []
+        for m in model_name:
+            latest = get_latest_experiment_dir(m, dataset_name)
+            if latest:
+                experiment_dirs.append(latest)
     if not experiment_dirs:
         print(f"No experiments found for {model_name}/{dataset_name}")
         return
-    plot_experiments(experiment_dirs, metrics=("mse", "mae"))
+    plot_experiments(experiment_dirs, metrics=["mse"])
 
 if __name__ == "__main__":
     # You can change model_name/dataset_name here or call example_usage from another script
-    example_usage("moment-small-lora")
+    model_size = ["moment-small", "moment-base", "moment-large"]
+    model_features = ["", "-finetuned", "-lora"]
+    model_list = []
+    for size in model_size:
+        for feature in model_features:
+            model_list.append(size + feature)
+    example_usage(model_list, all_experiments=True)

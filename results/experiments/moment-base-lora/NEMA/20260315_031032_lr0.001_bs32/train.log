@@ -1,0 +1,32 @@
+2026-03-15 03:10:32,794 - INFO - Starting Experiment: baseline
+2026-03-15 03:10:32,796 - INFO - Run directory created at: results/experiments/moment-base-lora\NEMA\20260315_031032_lr0.001_bs32
+2026-03-15 03:10:32,815 - INFO - Using device: cuda
+2026-03-15 03:10:32,958 - INFO - Initializing moment-base-lora...
+2026-03-15 03:10:33,178 - INFO - Setting d_model to 768
+2026-03-15 03:10:34,594 - INFO - Initializing pre-trained transformer from google/flan-t5-base.
+2026-03-15 03:10:34,595 - INFO - Enabling gradient checkpointing.
+2026-03-15 03:10:35,633 - INFO - Starting training for 50 epochs...
+2026-03-15 03:12:52,069 - INFO - Epoch 001/50 | Train MSE: 961.5431 MAE: 14.5187 | Val MSE: 1200.7905 MAE: 12.8710
+2026-03-15 03:12:54,679 - INFO - --> Validation MSE improved to 1200.7905. Saved best model.
+2026-03-15 03:15:12,679 - INFO - Epoch 002/50 | Train MSE: 877.6654 MAE: 13.8920 | Val MSE: 1196.0047 MAE: 12.7848
+2026-03-15 03:15:15,065 - INFO - --> Validation MSE improved to 1196.0047. Saved best model.
+2026-03-15 03:17:33,499 - INFO - Epoch 003/50 | Train MSE: 847.1650 MAE: 13.6953 | Val MSE: 1194.4164 MAE: 12.6034
+2026-03-15 03:17:36,002 - INFO - --> Validation MSE improved to 1194.4164. Saved best model.
+2026-03-15 03:19:55,077 - INFO - Epoch 004/50 | Train MSE: 826.2589 MAE: 13.5787 | Val MSE: 1196.7823 MAE: 12.7158
+2026-03-15 03:22:14,468 - INFO - Epoch 005/50 | Train MSE: 817.9674 MAE: 13.5453 | Val MSE: 1190.2501 MAE: 12.7661
+2026-03-15 03:22:17,381 - INFO - --> Validation MSE improved to 1190.2501. Saved best model.
+2026-03-15 03:24:37,546 - INFO - Epoch 006/50 | Train MSE: 801.8823 MAE: 13.4389 | Val MSE: 1201.9160 MAE: 12.6459
+2026-03-15 03:26:57,534 - INFO - Epoch 007/50 | Train MSE: 793.2550 MAE: 13.3891 | Val MSE: 1192.5745 MAE: 12.7275
+2026-03-15 03:29:16,996 - INFO - Epoch 008/50 | Train MSE: 783.1452 MAE: 13.3435 | Val MSE: 1199.7567 MAE: 12.9789
+2026-03-15 03:31:35,928 - INFO - Epoch 009/50 | Train MSE: 780.1541 MAE: 13.3141 | Val MSE: 1198.8728 MAE: 13.0626
+2026-03-15 03:33:54,578 - INFO - Epoch 010/50 | Train MSE: 773.8463 MAE: 13.2940 | Val MSE: 1203.0587 MAE: 13.2473
+2026-03-15 03:36:12,876 - INFO - Epoch 011/50 | Train MSE: 767.8376 MAE: 13.2926 | Val MSE: 1199.8137 MAE: 13.0088
+2026-03-15 03:38:30,612 - INFO - Epoch 012/50 | Train MSE: 763.1636 MAE: 13.2573 | Val MSE: 1204.3917 MAE: 13.2611
+2026-03-15 03:40:48,827 - INFO - Epoch 013/50 | Train MSE: 762.4653 MAE: 13.2583 | Val MSE: 1206.4839 MAE: 13.3380
+2026-03-15 03:43:06,772 - INFO - Epoch 014/50 | Train MSE: 754.1921 MAE: 13.2263 | Val MSE: 1202.3497 MAE: 13.1333
+2026-03-15 03:45:25,175 - INFO - Epoch 015/50 | Train MSE: 753.6864 MAE: 13.1988 | Val MSE: 1210.6633 MAE: 13.1706
+2026-03-15 03:45:25,176 - INFO - Early stopping triggered after 10 epochs with no improvement.
+2026-03-15 03:45:25,177 - INFO - Loading best model for testing...
+2026-03-15 03:47:49,485 - INFO - Final Test Metrics | MSE: 1334.8086 | MAE: 19.4139
+2026-03-15 03:47:49,510 - INFO - Saving predictions...
+2026-03-15 03:47:55,399 - INFO - All outputs saved to: results/experiments/moment-base-lora\NEMA\20260315_031032_lr0.001_bs32. Experiment complete.
