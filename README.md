@@ -78,6 +78,8 @@ To add a new model (or a new variant), update the following locations:
 * [Differentiable Convex Optimization Layers](https://arxiv.org/abs/1910.12430)
 * [Decision-Focused Learning for Combinatorial Optimization](https://arxiv.org/abs/1809.05504)
 * [Task-based End-to-end Model Learning in Stochastic Optimization](https://arxiv.org/abs/1703.04529)
+* [Perturbed Decision-Focused Learning for Modeling Strategic Energy Storage](https://arxiv.org/abs/2406.17085)
+* [Decision-Focused Learning Enhanced by Automated Feature Engineering for Energy Storage Optimisation](https://arxiv.org/abs/2509.05772)
 * [A Decision-Focused Predict-then-Bid Framework for Strategic Energy Storage](https://arxiv.org/abs/2505.01551)
 * [Economics of electric energy storage for energy arbitrage and regulation in New York](https://www.sciencedirect.com/science/article/pii/S0301421506003545)
 * [Estimating the value of electricity storage in PJM: Arbitrage and some welfare effects](https://www.sciencedirect.com/science/article/pii/S0140988308001631)
