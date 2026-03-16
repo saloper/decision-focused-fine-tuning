@@ -10,12 +10,20 @@ class NEMADataset(Dataset):
         
         #Load the data
         df = pd.read_parquet(file, engine='pyarrow')
-        start_date = start_date if start_date else df['Timestamp'].min()
-        end_date = end_date if end_date else df['Timestamp'].max()
+        if start_date:
+            start_ts = pd.to_datetime(start_date).tz_localize('EST')
+        else:
+            start_ts = df['Timestamp'].min()
+
+        if end_date:
+            #Go to the end of the day 
+            end_ts = pd.to_datetime(end_date).replace(hour=23, minute=59).tz_localize('EST')
+        else:
+            end_ts = df['Timestamp'].max()
 
         #Find indices for dates
-        start_idx = df[df['Timestamp'] >= start_date].index[0]
-        end_idx = df[df['Timestamp'] <= end_date].index[-1]
+        start_idx = df[df['Timestamp'] >= start_ts].index[0]
+        end_idx = df[df['Timestamp'] <= end_ts].index[-1]
         
         #Reach back input_len to be able to predict on start_date (if there is enough data)
         pad_start_idx = max(0, start_idx - self.input_len)
@@ -26,7 +34,7 @@ class NEMADataset(Dataset):
         self.data = torch.tensor(self.data, dtype=torch.float32)
 
     def __len__(self):
-        return (len(self.data) - self.input_len - self.output_len + 1) // self.output_len
+        return (len(self.data) - self.input_len - self.output_len) // self.output_len + 1
 
     def __getitem__(self, idx):
         x = self.data[idx * self.output_len : idx * self.output_len + self.input_len]
