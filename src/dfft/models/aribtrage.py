@@ -39,17 +39,38 @@ class BatteryArbitrage():
         #Define problem
         self.problem = cp.Problem(self.objective, self.constraints)
 
-    def solve(self, prices):
+    def solve(self, prices, warm_start=None, solver=None):
+        prices_arr = np.array(prices, dtype=float)
         
-        self.prices.value = prices
-       
-        self.problem.solve()
+        #Check for NaNs or Infs
+        if np.isnan(prices_arr).any() or np.isinf(prices_arr).any():
+            print("Skipping row: NaN or Inf detected in prices.")
+            return {
+                "profit": np.nan, 
+                "charge_schedule": None, 
+                "discharge_schedule": None, 
+                "state_of_charge": None
+            }
+            
+        self.prices.value = prices_arr
+        
+    
+        try:
+            self.problem.solve(warm_start=warm_start, solver=solver)
+        except Exception as e:
+            print(f"Solver failed on a row: {e}")
+            return {
+                "profit": np.nan, 
+                "charge_schedule": None, 
+                "discharge_schedule": None, 
+                "state_of_charge": None
+            }
 
         return {
             "profit": self.problem.value,
-            "charge_schedule": self.c.value,
-            "discharge_schedule": self.d.value,
-            "state_of_charge": self.s.value
+            "charge_schedule": self.c.value.copy() if self.c.value is not None else None,
+            "discharge_schedule": self.d.value.copy() if self.d.value is not None else None,
+            "state_of_charge": self.s.value.copy() if self.s.value is not None else None
         }
     
     def plot_solution(self):
@@ -82,10 +103,10 @@ class BatteryArbitrage():
         ax1_twin = ax1.twinx()
         
         # Plot discharge as positive (red) and charge as negative (green) for easy reading
-        ax1_twin.bar(range(T), discharge, label='Discharge (Sell)', color='red', alpha=0.6, width=0.8)
-        ax1_twin.bar(range(T), -charge, label='Charge (Buy)', color='green', alpha=0.6, width=0.8)
+        ax1_twin.bar(range(T), -discharge, label='Discharge (Sell)', color='red', alpha=0.6, width=0.8)
+        ax1_twin.bar(range(T), charge, label='Charge (Buy)', color='green', alpha=0.6, width=0.8)
         ax1_twin.set_ylabel('Power (MW)', color='dimgrey', fontweight='bold')
-        ax1_twin.set_ylim([-max(charge)-5, max(discharge)+5]) # Add some breathing room
+        ax1_twin.set_ylim([-max(discharge)-5, max(charge)+5]) # Add some breathing room
 
         # Combine legends for the top plot
         lines_1, labels_1 = ax1.get_legend_handles_labels()

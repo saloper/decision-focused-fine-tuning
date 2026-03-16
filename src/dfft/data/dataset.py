@@ -26,11 +26,11 @@ class NEMADataset(Dataset):
         self.data = torch.tensor(self.data, dtype=torch.float32)
 
     def __len__(self):
-        return len(self.data) - self.input_len - self.output_len + 1
+        return (len(self.data) - self.input_len - self.output_len + 1) // self.output_len
 
     def __getitem__(self, idx):
-        x = self.data[idx : idx + self.input_len]
-        y = self.data[idx + self.input_len : idx + self.input_len + self.output_len]
+        x = self.data[idx * self.output_len : idx * self.output_len + self.input_len]
+        y = self.data[idx * self.output_len + self.input_len : idx * self.output_len + self.input_len + self.output_len]
         
         x = x.transpose(0, 1) #transpose to MOMENT input shape (channel (1), timestamps)
         y = y.squeeze(-1) #flatten back to shape (timestamps)
