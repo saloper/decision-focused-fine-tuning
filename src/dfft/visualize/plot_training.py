@@ -7,6 +7,8 @@ import json
 import matplotlib.pyplot as plt
 import seaborn as sns
 from utils import get_latest_experiment_dir, get_experiment_dirs
+import plotly.graph_objects as go
+import os
 
 # Set a style for all plots
 sns.set(style="whitegrid", font_scale=1.2)
@@ -77,6 +79,43 @@ def plot_experiments(experiment_dirs, metrics=["mse", "mae"], save_path=None, sh
     if show:
         plt.show()
 
+def plot_experiments_plotly(experiment_dirs, metrics=["mse"], save_path="training_curves.html"):
+    fig = go.Figure()
+    metric = metrics[0]  # For simplicity, we plot only the first metric in the list. Can be extended to multiple metrics with subplots.
+    
+    for exp_dir in experiment_dirs:
+        results_path = os.path.join(exp_dir, "results.json")
+        if not os.path.exists(results_path):
+            continue
+            
+        results = load_results(results_path)
+        model_name = exp_dir.split('\\')[-3]  # Adjust based on your OS path separator
+        
+        train_vals = results.get("training_history", {}).get("train", {}).get(metric, [])
+        val_vals = results.get("training_history", {}).get("val", {}).get(metric, [])
+        test_val = results.get("test_results", {}).get(metric, None)
+        
+        epochs = list(range(1, len(train_vals) + 1))
+        
+        # Add Train Line (solid)
+        fig.add_trace(go.Scatter(x=epochs, y=train_vals, mode='lines', 
+                                 name=f"{model_name} (Train)", line=dict(dash='solid')))
+        # Add Val Line (dashed)
+        fig.add_trace(go.Scatter(x=epochs, y=val_vals, mode='lines', 
+                                 name=f"{model_name} (Val)", line=dict(dash='dash')))
+        
+        # Add Test Point
+        if test_val is not None:
+            fig.add_trace(go.Scatter(x=[epochs[-1]], y=[test_val], mode='markers',
+                                     name=f"{model_name} (Test)", marker=dict(size=12, symbol='x')))
+
+    fig.update_layout(title=f"Training Graph - {metric.upper()}",
+                      xaxis_title="Epoch", yaxis_title=f"{metric.upper()} Value",
+                      hovermode="x unified")
+    
+    # fig.write_html(save_path)
+    fig.show()
+
 
 
 def example_usage(model_name=["moment-small-finetuned"], dataset_name="NEMA", all_experiments=False):
@@ -97,14 +136,14 @@ def example_usage(model_name=["moment-small-finetuned"], dataset_name="NEMA", al
     if not experiment_dirs:
         print(f"No experiments found for {model_name}/{dataset_name}")
         return
-    plot_experiments(experiment_dirs, metrics=["mse"])
+    plot_experiments_plotly(experiment_dirs, metrics=["mse"])
 
 if __name__ == "__main__":
     # You can change model_name/dataset_name here or call example_usage from another script
     model_size = ["moment-small", "moment-base", "moment-large"]
-    model_features = ["", "-finetuned", "-lora"]
+    model_features = ["-finetuned", "-lora"]
     model_list = []
     for size in model_size:
         for feature in model_features:
             model_list.append(size + feature)
-    example_usage(model_list, all_experiments=True)
+    example_usage(model_list, all_experiments=False)

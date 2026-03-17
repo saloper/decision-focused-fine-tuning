@@ -1,0 +1,10 @@
+2026-03-16 19:40:33,811 - INFO - Starting Experiment: baseline
+2026-03-16 19:40:33,814 - INFO - Run directory created at: results/experiments/moment-base\NEMA\20260316_194033_lr0.001_bs32
+2026-03-16 19:40:33,831 - INFO - Using device: cuda
+2026-03-16 19:40:33,880 - INFO - Initializing moment-base...
+2026-03-16 19:40:34,015 - INFO - Setting d_model to 768
+2026-03-16 19:40:35,573 - INFO - Initializing pre-trained transformer from google/flan-t5-base.
+2026-03-16 19:40:35,575 - INFO - Enabling gradient checkpointing.
+2026-03-16 19:40:36,400 - INFO - Model is not trainable. Skipping training/validation. Running test only.
+2026-03-16 19:40:43,491 - INFO - Saving predictions...
+2026-03-16 19:40:43,568 - INFO - All outputs saved to: results/experiments/moment-base\NEMA\20260316_194033_lr0.001_bs32. Experiment complete.

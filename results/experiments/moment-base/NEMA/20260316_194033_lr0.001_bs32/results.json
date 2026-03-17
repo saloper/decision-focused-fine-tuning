@@ -1,0 +1,17 @@
+{
+    "training_history": {
+        "train": {
+            "mse": [],
+            "mae": []
+        },
+        "val": {
+            "mse": [],
+            "mae": []
+        }
+    },
+    "best_val_mse": null,
+    "test_results": {
+        "mse": 2258.879694620768,
+        "mae": 28.075520912806194
+    }
+}

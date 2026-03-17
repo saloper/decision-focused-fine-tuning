@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-from .utils import get_latest_experiment_dir, get_experiment_dirs
+from utils import get_latest_experiment_dir, get_experiment_dirs
 
 sns.set(style="whitegrid", font_scale=1.1)
 
@@ -61,7 +61,7 @@ def example_usage():
     By default, plots the latest experiment's predictions for the given model/dataset.
     Set all_experiments=True to plot all runs for that model/dataset (plots the latest by default).
     """
-    model_name = "moment-small-finetuned"
+    model_name = "moment-large-finetuned"
     dataset_name = "NEMA"
     n_samples = 12
     all_experiments = False
