@@ -15,11 +15,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.dfft.data.dataset import NEMADataset
 from src.dfft.training.train import setup_logger, run_training_experiment
 
-def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", dataset_name="NEMA"):
+def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", dataset_name="NEMA", version="version1"):
     parser = argparse.ArgumentParser(description="Train a decision-focused model")
     parser.add_argument("--config", type=str, default=config_path, help="Path to config file")
     parser.add_argument("--model", type=str, default=model_name, help="Model name and variation")
     parser.add_argument("--dataset", type=str, default=dataset_name, help="Dataset name")
+    parser.add_argument("--version", type=str, default=version, help="Version name")
     args = parser.parse_args()
 
     # Load Config
@@ -32,7 +33,7 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
 
     # Create Run Directory
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
+    run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_v{args.version}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
     os.makedirs(run_dir, exist_ok=True)
 
     # Setup Logging
@@ -88,11 +89,12 @@ if __name__ == "__main__":
     dataset = "NEMA"
     config = "configs/baseline.yaml"
     model_size = ["moment-small", "moment-base", "moment-large"]
-    model_features = ["", "-finetuned", "-lora"]
+    model_size = ["moment-small-time", "timesfm-zero-shot", "timesfm-finetuned"]
+    model_features = [""]#, "-finetuned", "-lora"]
     model_list = []
     for size in model_size:
         for feature in model_features:
             model_list.append(size + feature)
     print("Running experiments for models:", model_list)
     for model in model_list:
-        main(config, model, dataset)
+        main(config, model, dataset, "version1")
