@@ -1,7 +1,8 @@
 #To Update
 #Raw Data
 data/raw
-
+#Excel files 
+*.xlsx
 #Model Checkpoints
 *.pt 
 
