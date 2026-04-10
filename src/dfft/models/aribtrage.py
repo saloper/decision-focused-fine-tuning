@@ -1,7 +1,58 @@
 import cvxpy as cp
 import matplotlib.pyplot as plt
 import numpy as np
+import torch
+from cvxpylayers.torch import CvxpyLayer
 
+#Cvxpylayer implementation of optimization model as a layer
+class BatteryAbritrageLayer(torch.nn.Module):
+    """
+    Class to hold a linear program for battery arbitrage. Parameters are:
+    -T: task horizon
+    -p_max: maximum power transfer
+    -e_max: maximum energy storage
+    -eta_c: charge efficiency
+    -eta_d: dis-charge efficiency 
+    """
+    def __init__(self, T=24, p_max = 1, e_max = 4, eta_c = 0.95, eta_d = 0.95, gamma=1e-4):
+        super().__init__()
+        #Define decision variables
+        self.c = cp.Variable(T, nonneg = True) #charge
+        self.d = cp.Variable(T, nonneg = True) #discharge
+        self.s = cp.Variable(T + 1, nonneg = True)  #state of batttey with extra so we contrain no ending energy
+
+        #Build Constraints
+        self.constraints = [
+            self.s[0] == 0, #Start with no power
+            self.s[T] == 0, #end with no power
+            self.c <= p_max, #max throughput
+            self.d <= p_max, #max throughput
+            self.s <= e_max #max charge
+        ]
+
+        #Link states of charge
+        for t in range(T):
+            self.constraints.append(self.s[t+1] == self.s[t] + (self.c[t] * eta_c) - (self.d[t] / eta_d))
+
+        #Define prices
+        self.prices = cp.Parameter(T)
+
+        #Set Objective
+        self.objective = cp.Maximize(self.prices @ self.d - self.prices @ self.c - gamma * (cp.sum_squares(self.d) + cp.sum_squares(self.c)))
+
+        #Define problem
+        self.problem = cp.Problem(self.objective, self.constraints)
+        
+        #Wrap in optimization layer
+        self.cvx_layer = CvxpyLayer(self.problem, parameters=[self.prices], variables=[self.c, self.d, self.s])
+
+    def forward(self, prices):
+        c_sol, d_sol, s_sol = self.cvx_layer(prices)
+        
+        return c_sol, d_sol, s_sol
+    
+
+#Original LP to solve battery arbitrage
 class BatteryArbitrage():
     """
     Class to hold a linear program for battery arbitrage. Parameters are:
