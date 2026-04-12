@@ -133,9 +133,9 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         train_df = create_df(train_trues, train_preds, "train")
         val_df = create_df(val_trues, val_preds, "val")
         test_df = create_df(test_trues, test_preds, "test")
-
         predictions_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
-        predictions_df.to_csv(os.path.join(run_dir, "predictions.csv"), index=False)
+        # predictions_df.to_csv(os.path.join(run_dir, "predictions.csv"), index=False)
+        predictions_df.to_parquet(os.path.join(run_dir, "results.parquet"), engine='pyarrow', index=False)
         
         logger.info(f"All outputs saved to: {run_dir}. Experiment complete.")
     else:

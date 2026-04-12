@@ -37,12 +37,27 @@ class Trainer:
         mse_losses = []
         mae_losses = []
         
-        for x, y in tqdm(self.train_loader, desc="Training", leave=False):
+        for batch_data in tqdm(self.train_loader, desc="Training", leave=False):
+            # Handle both regular and temporal feature batches
+            if len(batch_data) == 2:
+                x, y = batch_data
+                hours, days_of_week = None, None
+            elif len(batch_data) == 4:
+                x, y, hours, days_of_week = batch_data
+                hours = hours.float().to(self.device)
+                days_of_week = days_of_week.float().to(self.device)
+            else:
+                raise ValueError(f"Unexpected batch format with {len(batch_data)} elements")
+            
             x = x.float().to(self.device)
             y = y.float().to(self.device)
             
             with torch.amp.autocast(enabled=(self.device == 'cuda'), device_type=self.device):
-                predictions = self.model(x)
+                # Pass temporal features if available
+                if hours is not None:
+                    predictions = self.model(x, hours=hours, days_of_week=days_of_week)
+                else:
+                    predictions = self.model(x)
                 mse, mae = self._compute_metrics(predictions, y)
                 loss = mse # Use MSE as primary loss for optimization
             
@@ -74,12 +89,27 @@ class Trainer:
             loader = self.val_loader
         
         with torch.no_grad():
-            for x, y in tqdm(loader, desc=phase, leave=False):
+            for batch_data in tqdm(loader, desc=phase, leave=False):
+                # Handle both regular and temporal feature batches
+                if len(batch_data) == 2:
+                    x, y = batch_data
+                    hours, days_of_week = None, None
+                elif len(batch_data) == 4:
+                    x, y, hours, days_of_week = batch_data
+                    hours = hours.float().to(self.device)
+                    days_of_week = days_of_week.float().to(self.device)
+                else:
+                    raise ValueError(f"Unexpected batch format with {len(batch_data)} elements")
+                
                 x = x.float().to(self.device)
                 y = y.float().to(self.device)
                 
                 with torch.amp.autocast(enabled=(self.device == 'cuda'), device_type=self.device):
-                    predictions = self.model(x)
+                    # Pass temporal features if available
+                    if hours is not None:
+                        predictions = self.model(x, hours=hours, days_of_week=days_of_week)
+                    else:
+                        predictions = self.model(x)
                     mse, mae = self._compute_metrics(predictions, y)
                     
                 mse_losses.append(mse.item())

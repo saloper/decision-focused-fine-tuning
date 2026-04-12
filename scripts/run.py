@@ -50,12 +50,16 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     # Load Data
     data_path = os.path.join(paths_cfg["processed_input_path"], paths_cfg["input_filename"])
     
+    # Determine if temporal features are needed for this model
+    include_time = "time" in args.model.lower() and "moment" in args.model.lower()  # Only MOMENTTime models include temporal features
+    
     train_dataset = NEMADataset(
         file=data_path,
         start_date=data_cfg["train_start_date"],
         end_date=data_cfg["train_end_date"],
         input_len=data_cfg["input_len"],
-        output_len=data_cfg["output_len"]
+        output_len=data_cfg["output_len"],
+        include_time=include_time
     )
     
     val_dataset = NEMADataset(
@@ -63,7 +67,8 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
         start_date=data_cfg["val_start_date"],
         end_date=data_cfg["val_end_date"],
         input_len=data_cfg["input_len"],
-        output_len=data_cfg["output_len"]
+        output_len=data_cfg["output_len"],
+        include_time=include_time
     )
 
     test_dataset = NEMADataset(
@@ -71,7 +76,8 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
         start_date=data_cfg["test_start_date"],
         end_date=data_cfg["test_end_date"],
         input_len=data_cfg["input_len"],
-        output_len=data_cfg["output_len"]
+        output_len=data_cfg["output_len"],
+        include_time=include_time
     )
 
     run_training_experiment(
@@ -89,8 +95,8 @@ if __name__ == "__main__":
     dataset = "NEMA"
     config = "configs/baseline.yaml"
     model_size = ["moment-small", "moment-base", "moment-large"]
-    model_size = ["moment-small-time", "timesfm-zero-shot", "timesfm-finetuned"]
-    model_features = [""]#, "-finetuned", "-lora"]
+    model_size = ["timesfm-base"]
+    model_features = ["-zeroshot", "-finetuned", "-lora"]
     model_list = []
     for size in model_size:
         for feature in model_features:

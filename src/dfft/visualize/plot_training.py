@@ -195,10 +195,12 @@ def example_usage(model_name=["moment-small-finetuned"], dataset_name="NEMA", al
 
 if __name__ == "__main__":
     # You can change model_name/dataset_name here or call example_usage from another script
-    model_size = ["moment-small", "moment-base", "moment-large"]
-    model_features = ["", "-finetuned", "-lora"]
+    model_size = ["moment-small", "moment-base", "moment-large", "timesfm-base"]
+    model_features = ["-zeroshot", "-finetuned", "-lora"]
     model_list = []
     for size in model_size:
         for feature in model_features:
             model_list.append(size + feature)
+    model_list.append("moment-small-time")
+    model_list.append("moment-small-time-finetuned")
     example_usage(model_list, all_experiments=False)

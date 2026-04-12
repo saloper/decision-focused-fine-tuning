@@ -3,10 +3,11 @@ import torch
 from torch.utils.data import Dataset
 
 class NEMADataset(Dataset):
-    def __init__(self, file, start_date=None, end_date=None, input_len=512, output_len=24):
+    def __init__(self, file, start_date=None, end_date=None, input_len=512, output_len=24, include_time=False):
         
         self.input_len = input_len
         self.output_len = output_len
+        self.include_time = include_time
         
         #Load the data
         df = pd.read_parquet(file, engine='pyarrow')
@@ -28,6 +29,10 @@ class NEMADataset(Dataset):
         #Reach back input_len to be able to predict on start_date (if there is enough data)
         pad_start_idx = max(0, start_idx - self.input_len)
         
+        # Store timestamps if needed for temporal features
+        if self.include_time:
+            self.timestamps = df.loc[pad_start_idx : end_idx, 'Timestamp'].values
+        
         #Select relevant data
         self.data = df.loc[pad_start_idx : end_idx, 'RT_LMP'].values.reshape(-1,1) #Add training dimension: shape (timestamps, 1)
         
@@ -42,4 +47,17 @@ class NEMADataset(Dataset):
         
         x = x.transpose(0, 1) #transpose to MOMENT input shape (channel (1), timestamps)
         y = y.squeeze(-1) #flatten back to shape (timestamps)
+        
+        # Extract temporal features if requested
+        if self.include_time:
+            # Get the timestamps for the output window
+            output_start_idx = idx * self.output_len + self.input_len
+            output_timestamps = self.timestamps[output_start_idx : output_start_idx + self.output_len]
+            
+            # Extract hour of day and day of week
+            hours = torch.tensor([pd.Timestamp(ts).hour for ts in output_timestamps], dtype=torch.float32)
+            days_of_week = torch.tensor([pd.Timestamp(ts).dayofweek for ts in output_timestamps], dtype=torch.float32)
+            
+            return x, y, hours, days_of_week
+        
         return x, y

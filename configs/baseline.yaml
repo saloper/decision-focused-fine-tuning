@@ -19,7 +19,7 @@ data:
   batch_size: 32
 
 training:
-  epochs: 50
+  epochs: 2 #50
   learning_rate: 0.001
   loss_function: "mse" 
   patience: 10
