@@ -1,0 +1,10 @@
+2026-04-15 20:51:00,873 - INFO - Starting Experiment: baseline
+2026-04-15 20:51:01,013 - INFO - Run directory created at: results/experiments/timesfm-base-finetuned\NEMA\20260415_205100_v1_lr0.001_bs32
+2026-04-15 20:51:01,139 - INFO - Using device: cuda
+2026-04-15 20:51:01,315 - INFO - Initializing timesfm-base-finetuned...
+2026-04-15 20:51:01,540 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 20:51:01,575 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/timesfm-2.5-200m-transformers/5a9806b9b291fad9233b5249d88263f1846304d3/config.json "HTTP/1.1 200 OK"
+2026-04-15 20:51:01,643 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 20:51:01,702 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/timesfm-2.5-200m-transformers/5a9806b9b291fad9233b5249d88263f1846304d3/config.json "HTTP/1.1 200 OK"
+2026-04-15 20:51:01,792 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-04-15 20:51:02,527 - INFO - Starting training for 2 epochs...

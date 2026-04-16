@@ -1,0 +1,17 @@
+2026-04-15 18:03:40,510 - INFO - Starting Experiment: baseline
+2026-04-15 18:03:40,512 - INFO - Run directory created at: results/experiments/timesfm-base-finetuned\NEMA\20260415_180339_vversion1_lr0.001_bs32
+2026-04-15 18:03:40,618 - INFO - Using device: cuda
+2026-04-15 18:03:40,661 - INFO - Initializing timesfm-base-finetuned...
+2026-04-15 18:03:40,833 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 18:03:40,879 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/timesfm-2.5-200m-transformers/5a9806b9b291fad9233b5249d88263f1846304d3/config.json "HTTP/1.1 200 OK"
+2026-04-15 18:03:40,951 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 18:03:40,986 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/timesfm-2.5-200m-transformers/5a9806b9b291fad9233b5249d88263f1846304d3/config.json "HTTP/1.1 200 OK"
+2026-04-15 18:03:41,608 - INFO - Starting training for 2 epochs...
+2026-04-15 18:04:10,020 - INFO - Epoch 001/2 | Train MSE: 3654.5413 MAE: 42.7525 | Val MSE: 3563.7188 MAE: 42.0229
+2026-04-15 18:04:34,379 - INFO - --> Validation MSE improved to 3563.7188. Saved best model.
+2026-04-15 18:04:42,392 - INFO - Epoch 002/2 | Train MSE: 3604.2506 MAE: 42.1514 | Val MSE: 3547.6930 MAE: 41.8959
+2026-04-15 18:05:07,385 - INFO - --> Validation MSE improved to 3547.6930. Saved best model.
+2026-04-15 18:05:07,386 - INFO - Loading best model for testing...
+2026-04-15 18:05:59,001 - INFO - Final Test Metrics | MSE: 7929.8288 | MAE: 68.3846
+2026-04-15 18:05:59,010 - INFO - Saving predictions...
+2026-04-15 18:05:59,148 - INFO - All outputs saved to: results/experiments/timesfm-base-finetuned\NEMA\20260415_180339_vversion1_lr0.001_bs32. Experiment complete.

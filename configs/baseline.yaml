@@ -17,9 +17,14 @@ data:
   input_len: 512 #numer of horizons passed as an input
   output_len: 24 #number of horizons to predict in future
   batch_size: 32
+  model_parameter:
+    r: 8
+    lora_alpha: 16
+    lora_dropout: 0.1
 
 training:
   epochs: 2 #50
   learning_rate: 0.001
   loss_function: "mse" 
   patience: 10
+

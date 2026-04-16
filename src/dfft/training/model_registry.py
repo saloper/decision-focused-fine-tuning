@@ -106,79 +106,43 @@ def get_timesfm_model(size, model_type, config_kwargs):
     """
     TimesFM model factory
     """
-
-    # Use SAME model for all sizes (as requested)
+    # Use SAME model for all sizes as requested
     model_name = "google/timesfm-2.5-200m-transformers"
 
+    # Base parameters that all TimesFM models require
     params = {
         "model_name": model_name,
-        "input_len": 512,
-        "output_len": 24,
-        "random_seed": 42,
+        "input_len": config_kwargs.get("input_len", 512),
+        "output_len": config_kwargs.get("output_len", 24),
+        "random_seed": config_kwargs.get("random_seed", 42),
     }
 
     # -------------------------
     # ZERO-SHOT
     # -------------------------
     if model_type == "zeroshot":
-        params.update({
-            "trainable": False
-        })
-
-        params.update({k: v for k, v in config_kwargs.items() if k in params})
-
-        model = TimesFMZeroShot(
-            input_len=params["input_len"],
-            output_len=params["output_len"],
-            model_name=params["model_name"],
-            random_seed=params["random_seed"]
-        )
-
-        return model, params["trainable"]
+        model = TimesFMZeroShot(**params)
+        return model, False
 
     # -------------------------
-    # LINEAR HEAD / FINETUNED
+    # NATIVE HEAD / FINETUNED
     # -------------------------
     elif model_type in ["linear", "finetuned"]:
-        params.update({
-            "trainable": True
-        })
-
-        params.update({k: v for k, v in config_kwargs.items() if k in params})
-
-        model = TimesFMLinearHead(
-            input_len=params["input_len"],
-            output_len=params["output_len"],
-            model_name=params["model_name"],
-            random_seed=params["random_seed"]
-        )
-
-        return model, params["trainable"]
+        model = TimesFMLinearHead(**params)
+        return model, True
 
     # -------------------------
     # LORA
     # -------------------------
     elif model_type == "lora":
         params.update({
-            "r": 8,
-            "lora_alpha": 16,
-            "lora_dropout": 0.05,
-            "trainable": True
+            "r": config_kwargs.get("r", 8),
+            "lora_alpha": config_kwargs.get("lora_alpha", 16),
+            "lora_dropout": config_kwargs.get("lora_dropout", 0.05),
         })
-
-        params.update({k: v for k, v in config_kwargs.items() if k in params})
-
-        model = TimesFMLoRA(
-            input_len=params["input_len"],
-            output_len=params["output_len"],
-            model_name=params["model_name"],
-            r=params["r"],
-            lora_alpha=params["lora_alpha"],
-            lora_dropout=params["lora_dropout"],
-            random_seed=params["random_seed"]
-        )
-
-        return model, params["trainable"]
+        print(params)
+        model = TimesFMLoRA(**params)
+        return model, True
 
     else:
         raise ValueError(f"Unknown TimesFM model_type: {model_type}")
