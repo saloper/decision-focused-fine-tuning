@@ -7,8 +7,8 @@ import torch
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import OneCycleLR
 
-from src.dfft.training.trainer import Trainer
-from src.dfft.training.model_registry import get_model
+from dfft.training.trainer import Trainer
+from dfft.training.model_registry import get_model
 
 def setup_logger(log_file):
     logger = logging.getLogger()
@@ -28,15 +28,21 @@ def setup_logger(log_file):
     logger.addHandler(ch)
     return logger
 
-def create_df(trues, preds, split_name):
-    n_samples = trues.shape[0]
-    df = pd.DataFrame({
+def create_df(results_dict, split_name):
+    n_samples = results_dict["true"].shape[0]
+    
+    #Base columns
+    df_data = {
         "split": [split_name] * n_samples,
         "sample_idx": np.arange(n_samples),
-        "true": np.squeeze(trues).tolist(),
-        "pred": np.squeeze(preds).tolist()
-    })
-    return df
+    }
+    
+    #Add all arrays from the dictionary
+    for key, arr in results_dict.items():
+        if arr.size > 0:
+            df_data[key] = arr.tolist()
+            
+    return pd.DataFrame(df_data)
 
 def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_dataset, val_dataset, test_dataset, device):
     logger = logging.getLogger()
@@ -71,10 +77,12 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
             optimizer=optimizer,
             device=device,
             scheduler=scheduler,
-            max_norm=5.0
+            max_norm=5.0,
+            horizon=data_cfg["output_len"],
+            decision_loss=train_cfg["decision_loss"]
         )
 
-        history = {"train": {"mse": [], "mae": []}, "val": {"mse": [], "mae": []}}
+        history = {"train": {"mse": [], "mae": [], "profit": []}, "val": {"mse": [], "mae": [], "profit": []}}
         patience = train_cfg.get("patience", 10)
         best_val_metric = float('inf')
         epochs_no_improve = 0
@@ -84,19 +92,21 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         
         for epoch in range(1, train_cfg["epochs"] + 1):
             train_metrics = trainer.train_epoch()
-            val_metrics, val_preds, val_trues = trainer.evaluate(phase="Validating")
+            val_metrics, _ = trainer.evaluate(phase="Validating")
             
             if scheduler is not None:
                 scheduler.step()
 
             history["train"]["mse"].append(float(train_metrics["mse"]))
             history["train"]["mae"].append(float(train_metrics["mae"]))
+            history["train"]["profit"].append(float(train_metrics["profit"]))
             history["val"]["mse"].append(float(val_metrics["mse"]))
             history["val"]["mae"].append(float(val_metrics["mae"]))
+            history["val"]["profit"].append(float(val_metrics["profit"]))
 
             logger.info(f"Epoch {epoch:03d}/{train_cfg['epochs']} | "
-                        f"Train MSE: {train_metrics['mse']:.4f} MAE: {train_metrics['mae']:.4f} | "
-                        f"Val MSE: {val_metrics['mse']:.4f} MAE: {val_metrics['mae']:.4f}")
+                        f"Train MSE: {train_metrics['mse']:.4f} MAE: {train_metrics['mae']:.4f} | Profit: ${train_metrics['profit']:.2f} "
+                        f"Val MSE: {val_metrics['mse']:.4f} MAE: {val_metrics['mae']:.4f} | Profit: ${val_metrics['profit']:.2f}" )
 
             if val_metrics["mse"] < best_val_metric:
                 best_val_metric = val_metrics["mse"]
@@ -112,27 +122,38 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         logger.info("Loading best model for testing...")
         model.load_state_dict(torch.load(best_model_path))
         
-        train_metrics_final, train_preds, train_trues = trainer.evaluate(phase="Evaluating Train", loader=train_loader)
-        val_metrics_final, val_preds, val_trues = trainer.evaluate(phase="Evaluating Val", loader=val_loader)
-        test_metrics, test_preds, test_trues = trainer.test()
+        train_metrics_final, train_results = trainer.evaluate(phase="Evaluating Train", loader=train_loader)
+        val_metrics_final, val_results= trainer.evaluate(phase="Evaluating Val", loader=val_loader)
+        test_metrics, test_results = trainer.test()
 
-        logger.info(f"Final Test Metrics | MSE: {test_metrics['mse']:.4f} | MAE: {test_metrics['mae']:.4f}")
+        logger.info(f"Final Test Metrics | MSE: {test_metrics['mse']:.4f} | MAE: {test_metrics['mae']:.4f} | Profit: ${test_metrics['profit']:.2f}")
 
         results = {
             "training_history": history,
             "best_val_mse": float(best_val_metric),
+            "final_train_results": {
+                 "mse": float(train_metrics_final["mse"]),
+                 "mae": float(train_metrics_final["mae"]),
+                 "profit": float(train_metrics_final["profit"])
+            },
+            "final_val_results": {
+                 "mse": float(val_metrics_final["mse"]),
+                 "mae": float(val_metrics_final["mae"]),
+                 "profit": float(val_metrics_final["profit"])
+            },
             "test_results": {
                  "mse": float(test_metrics["mse"]),
-                 "mae": float(test_metrics["mae"])
+                 "mae": float(test_metrics["mae"]),
+                 "profit": float(test_metrics["profit"])
             }
         }
         with open(os.path.join(run_dir, "results.json"), "w") as f:
             json.dump(results, f, indent=4)
 
         logger.info("Saving predictions...")
-        train_df = create_df(train_trues, train_preds, "train")
-        val_df = create_df(val_trues, val_preds, "val")
-        test_df = create_df(test_trues, test_preds, "test")
+        train_df = create_df(train_results, "train")
+        val_df = create_df(val_results, "val")
+        test_df = create_df(test_results, "test")
         predictions_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
         # predictions_df.to_csv(os.path.join(run_dir, "predictions.csv"), index=False)
         predictions_df.to_parquet(os.path.join(run_dir, "results.parquet"), engine='pyarrow', index=False)
@@ -152,25 +173,26 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
             max_norm=5.0
         )
         # Dummy history for compatibility
-        history = {"train": {"mse": [], "mae": []}, "val": {"mse": [], "mae": []}}
+        history = {"train": {"mse": [], "mae": [], "profit": []}, "val": {"mse": [], "mae": [], "profit": []}}
         best_val_metric = None
-        train_metrics_final, train_preds, train_trues = trainer.evaluate(phase="Evaluating Train", loader=train_loader)
-        val_metrics_final, val_preds, val_trues = trainer.evaluate(phase="Evaluating Val", loader=val_loader)
-        test_metrics, test_preds, test_trues = trainer.test()
+        train_metrics_final, train_results = trainer.evaluate(phase="Evaluating Train", loader=train_loader)
+        val_metrics_final, val_results= trainer.evaluate(phase="Evaluating Val", loader=val_loader)
+        test_metrics, test_results = trainer.test()
         results = {
             "training_history": history,
             "best_val_mse": best_val_metric,
             "test_results": {
                  "mse": float(test_metrics["mse"]),
-                 "mae": float(test_metrics["mae"])
+                 "mae": float(test_metrics["mae"]),
+                 "profit": float(test_metrics["profit"])
             }
         }
         with open(os.path.join(run_dir, "results.json"), "w") as f:
             json.dump(results, f, indent=4)
         logger.info("Saving predictions...")
-        train_df = create_df(train_trues, train_preds, "train")
-        val_df = create_df(val_trues, val_preds, "val")
-        test_df = create_df(test_trues, test_preds, "test")
+        train_df = create_df(train_results, "train")
+        val_df = create_df(val_results, "val")
+        test_df = create_df(test_results, "test")
         predictions_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
         # predictions_df.to_csv(os.path.join(run_dir, "predictions.csv"), index=False)
         predictions_df.to_parquet(os.path.join(run_dir, "results.parquet"), engine='pyarrow', index=False)
