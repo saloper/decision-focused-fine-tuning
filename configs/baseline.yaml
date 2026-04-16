@@ -23,8 +23,10 @@ data:
     lora_dropout: 0.1
 
 training:
-  epochs: 2 #50
+  epochs: 1 #50
   learning_rate: 0.001
+  decision_loss: True
   loss_function: "mse" 
   patience: 10
+  
 

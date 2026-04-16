@@ -1,9 +1,9 @@
 
 
-from src.dfft.models.moment import MOMENTForecaster
-from src.dfft.models.momentLora import MOMENTLoRAForecaster
-from src.dfft.models.moment_time import MOMENTTimeForecaster
-from src.dfft.models.timesfm import TimesFMZeroShot, TimesFMLinearHead, TimesFMLoRA
+from dfft.models.moment import MOMENTForecaster
+from dfft.models.momentLora import MOMENTLoRAForecaster
+from dfft.models.moment_time import MOMENTTimeForecaster
+from dfft.models.timesfm import TimesFMZeroShot, TimesFMLinearHead, TimesFMLoRA
 
 def get_moment_model(size, model_type, config_kwargs):
     size_map = {
