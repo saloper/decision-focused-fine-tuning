@@ -181,6 +181,16 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         results = {
             "training_history": history,
             "best_val_mse": best_val_metric,
+            "final_train_results": {
+                 "mse": float(train_metrics_final["mse"]),
+                 "mae": float(train_metrics_final["mae"]),
+                 "profit": float(train_metrics_final["profit"])
+            },
+            "final_val_results": {
+                 "mse": float(val_metrics_final["mse"]),
+                 "mae": float(val_metrics_final["mae"]),
+                 "profit": float(val_metrics_final["profit"])
+            },
             "test_results": {
                  "mse": float(test_metrics["mse"]),
                  "mae": float(test_metrics["mae"]),
