@@ -1,0 +1,15 @@
+2026-04-17 21:33:06,175 - INFO - Starting Experiment: baseline
+2026-04-17 21:33:06,177 - INFO - Run directory created at: results/experiments/moment-small-finetuned-decision\NEMA\20260417_213306_v1_lr0.001_bs32
+2026-04-17 21:33:06,238 - INFO - Using device: cuda
+2026-04-17 21:33:06,289 - INFO - Initializing moment-small-finetuned...
+2026-04-17 21:33:06,367 - INFO - Setting d_model to 512
+2026-04-17 21:33:07,045 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-04-17 21:33:07,047 - INFO - Enabling gradient checkpointing.
+2026-04-17 21:33:14,173 - INFO - Starting training for 2 epochs...
+2026-04-17 21:34:46,448 - INFO - Epoch 001/2 | Train MSE: 1681.5121 MAE: 22.4249 | Profit: $-17.91 Val MSE: 2037.1219 MAE: 23.8328 | Profit: $-60.04
+2026-04-17 21:34:47,563 - INFO - --> Validation MSE improved to 2037.1219. Saved best model.
+2026-04-17 21:36:55,660 - INFO - Epoch 002/2 | Train MSE: 2212.3450 MAE: 27.3235 | Profit: $-3.67 Val MSE: 2223.9950 MAE: 25.5073 | Profit: $-57.19
+2026-04-17 21:36:55,667 - INFO - Loading best model for testing...
+2026-04-17 21:40:20,043 - INFO - Final Test Metrics | MSE: 3111.8517 | MAE: 35.1759 | Profit: $-94.03
+2026-04-17 21:40:20,054 - INFO - Saving predictions...
+2026-04-17 21:40:20,322 - INFO - All outputs saved to: results/experiments/moment-small-finetuned-decision\NEMA\20260417_213306_v1_lr0.001_bs32. Experiment complete.

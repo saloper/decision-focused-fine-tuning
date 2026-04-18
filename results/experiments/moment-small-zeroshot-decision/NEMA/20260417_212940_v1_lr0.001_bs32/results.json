@@ -1,0 +1,20 @@
+{
+    "training_history": {
+        "train": {
+            "mse": [],
+            "mae": [],
+            "profit": []
+        },
+        "val": {
+            "mse": [],
+            "mae": [],
+            "profit": []
+        }
+    },
+    "best_val_mse": null,
+    "test_results": {
+        "mse": 2249.966407775879,
+        "mae": 28.13063128789266,
+        "profit": -14.379429547210398
+    }
+}

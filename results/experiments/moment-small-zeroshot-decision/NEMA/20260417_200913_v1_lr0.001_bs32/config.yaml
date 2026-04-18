@@ -1,0 +1,32 @@
+#Metadata
+experiment_name: "baseline"
+
+paths:
+  raw_input_path: "data/raw/"
+  processed_input_path: "data/processed/"
+  input_filename: "NEMA_LMP.parquet"
+  output_path: "results/experiments/"
+
+data:
+  train_start_date: '2017-01-01' #Start and End dates are inclusive
+  train_end_date: '2023-12-31'
+  val_start_date: '2024-01-01'
+  val_end_date: '2024-12-31'
+  test_start_date: '2025-01-01'
+  test_end_date: '2025-12-31'
+  input_len: 512 #numer of horizons passed as an input
+  output_len: 24 #number of horizons to predict in future
+  batch_size: 32
+  model_parameter:
+    r: 8
+    lora_alpha: 16
+    lora_dropout: 0.1
+
+training:
+  epochs: 2 #50
+  learning_rate: 0.001
+  decision_loss: True
+  loss_function: "mse" 
+  patience: 10
+  
+

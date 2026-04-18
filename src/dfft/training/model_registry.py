@@ -1,11 +1,12 @@
 
 
-from dfft.models.moment import MOMENTForecaster
-from dfft.models.momentLora import MOMENTLoRAForecaster
-from dfft.models.moment_time import MOMENTTimeForecaster
-from dfft.models.timesfm import TimesFMZeroShot, TimesFMLinearHead, TimesFMLoRA
+
 
 def get_moment_model(size, model_type, config_kwargs):
+    
+    from dfft.models.moment import MOMENTForecaster
+    from dfft.models.momentLora import MOMENTLoRAForecaster
+    from dfft.models.moment_time import MOMENTTimeForecaster
     size_map = {
         "small": "AutonLab/MOMENT-1-small",
         "base": "AutonLab/MOMENT-1-base",
@@ -107,6 +108,7 @@ def get_timesfm_model(size, model_type, config_kwargs):
     TimesFM model factory
     """
     # Use SAME model for all sizes as requested
+    from dfft.models.timesfm import TimesFMZeroShot, TimesFMLinearHead, TimesFMLoRA
     model_name = "google/timesfm-2.5-200m-transformers"
 
     # Base parameters that all TimesFM models require

@@ -25,7 +25,7 @@ data:
 training:
   epochs: 1 #50
   learning_rate: 0.001
-  decision_loss: True
+  decision_loss: False
   loss_function: "mse" 
   patience: 10
   

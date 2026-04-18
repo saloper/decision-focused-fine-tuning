@@ -54,6 +54,9 @@ class MOMENTLoRAForecaster(BaseForecaster):
         )
         
         # 3. Wrap the pipeline with PEFT
+        config = self.moment_pipeline.config
+        if not hasattr(config, "get"):
+            config.get = lambda k, default=None: getattr(config, k, default)
         self.moment_pipeline = get_peft_model(self.moment_pipeline, lora_config)
         
         # Print trainable parameters to verify LoRA and Head are active

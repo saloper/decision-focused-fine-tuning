@@ -11,6 +11,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 from src.dfft.data.dataset import NEMADataset
 from src.dfft.training.train import setup_logger, run_training_experiment
@@ -33,7 +34,10 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
 
     # Create Run Directory
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_v{args.version}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
+    if train_cfg['decision_loss']:
+        run_dir = os.path.join(paths_cfg["output_path"], args.model + "-decision", args.dataset, f"{timestamp}_v{args.version}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
+    else:
+        run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_v{args.version}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
     os.makedirs(run_dir, exist_ok=True)
 
     # Setup Logging
@@ -93,10 +97,11 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
 
 if __name__ == "__main__":
     dataset = "NEMA"
-    config = "configs/baseline.yaml"
-    model_size = ["moment-small", "moment-base", "moment-large"]
-    model_size = ["timesfm-base"]
-    model_features = ["-zeroshot", "-finetuned", "-lora"]
+    # config = "configs/baseline.yaml"
+    config = "configs/decision.yaml"
+    model_size = ["moment-small"] #, "moment-base", "moment-large"]
+    # model_size = ["timesfm-base"]
+    model_features = [ "-zeroshot", "-finetuned","-lora"]
     model_list = []
     for size in model_size:
         for feature in model_features:

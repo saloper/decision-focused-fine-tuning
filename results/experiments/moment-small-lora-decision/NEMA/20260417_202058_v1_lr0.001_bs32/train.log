@@ -1,0 +1,7 @@
+2026-04-17 20:20:58,440 - INFO - Starting Experiment: baseline
+2026-04-17 20:20:58,440 - INFO - Run directory created at: results/experiments/moment-small-lora-decision\NEMA\20260417_202058_v1_lr0.001_bs32
+2026-04-17 20:20:58,462 - INFO - Using device: cuda
+2026-04-17 20:20:58,509 - INFO - Initializing moment-small-lora...
+2026-04-17 20:20:58,726 - INFO - Setting d_model to 512
+2026-04-17 20:20:59,434 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-04-17 20:20:59,436 - INFO - Enabling gradient checkpointing.

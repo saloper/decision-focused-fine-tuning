@@ -9,17 +9,15 @@ description = "Fine-tuning foundation time series models on decision loss for ba
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    # Deep Learning & Transformers
+    # Deep Learning Shared Base
     "torch==2.5.1",
     "torchvision==0.20.1",
     "torchaudio==2.5.1",
-    "transformers==4.33.3",
     "accelerate==1.13.0",
     "peft==0.13.2",
     "safetensors==0.7.0",
-    "huggingface-hub==0.24.0",
 
-    # Optimization & Decision-Focused Learning
+    # Optimization Shared Base (Pinned for diffcp compatibility)
     "cvxpy==1.7.5",
     "cvxpylayers==1.0.3",
     "diffcp==1.1.8",
@@ -27,18 +25,30 @@ dependencies = [
     "osqp==1.1.1",
     "scs==3.2.11",
 
-    # Data Science & Numerical
+    # Data Science & Utilities
     "numpy==1.25.2",
     "pandas==2.0.3",
     "scipy==1.13.1",
     "sympy==1.13.1",
-    "momentfm==0.1.4",
-
-    # Utilities
     "tqdm==4.67.3",
     "requests==2.33.1",
     "pyyaml==6.0.3",
     "pillow==12.1.1",
+]
+
+[project.optional-dependencies]
+# Installed via: pip install -e .[moment]
+moment = [
+    "momentfm==0.1.4",
+    "transformers==4.33.3",
+    "huggingface-hub==0.24.0"
+]
+
+# Installed via: pip install -e .[times]
+times = [
+    "transformers>=5.3.0",
+    "huggingface-hub>=1.11.0",
+    #"timesfm" 
 ]
 
 [tool.setuptools.packages.find]

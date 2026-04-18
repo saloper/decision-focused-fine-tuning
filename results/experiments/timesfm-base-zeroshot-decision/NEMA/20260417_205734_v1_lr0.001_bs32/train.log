@@ -1,0 +1,13 @@
+2026-04-17 20:57:34,148 - INFO - Starting Experiment: baseline
+2026-04-17 20:57:34,148 - INFO - Run directory created at: results/experiments/timesfm-base-zeroshot-decision\NEMA\20260417_205734_v1_lr0.001_bs32
+2026-04-17 20:57:34,379 - INFO - Using device: cuda
+2026-04-17 20:57:34,618 - INFO - Initializing timesfm-base-zeroshot...
+2026-04-17 20:57:35,193 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-17 20:57:35,208 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/timesfm-2.5-200m-transformers/5a9806b9b291fad9233b5249d88263f1846304d3/config.json "HTTP/1.1 200 OK"
+2026-04-17 20:57:35,313 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-17 20:57:35,318 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-17 20:57:35,344 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google/timesfm-2.5-200m-transformers/5a9806b9b291fad9233b5249d88263f1846304d3/config.json "HTTP/1.1 200 OK"
+2026-04-17 20:57:35,402 - INFO - HTTP Request: HEAD https://huggingface.co/google/timesfm-2.5-200m-transformers/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-04-17 20:57:39,888 - INFO - Model is not trainable. Skipping training/validation. Running test only.
+2026-04-17 21:07:10,714 - INFO - Saving predictions...
+2026-04-17 21:07:10,909 - INFO - All outputs saved to: results/experiments/timesfm-base-zeroshot-decision\NEMA\20260417_205734_v1_lr0.001_bs32. Experiment complete.

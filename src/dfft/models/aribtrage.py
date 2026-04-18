@@ -47,9 +47,16 @@ class BatteryAbritrageLayer(torch.nn.Module):
         self.cvx_layer = CvxpyLayer(self.problem, parameters=[self.prices], variables=[self.c, self.d, self.s])
 
     def forward(self, prices):
-        c_sol, d_sol, s_sol = self.cvx_layer(prices)
-        
-        return c_sol, d_sol, s_sol
+        device = prices.device
+
+        prices_cpu = prices.cpu()  # detach optional depending on usage
+        c_sol, d_sol, s_sol = self.cvx_layer(prices_cpu)
+
+        return (
+            c_sol.to(device),
+            d_sol.to(device),
+            s_sol.to(device),
+        )
     
 
 #Original LP to solve battery arbitrage

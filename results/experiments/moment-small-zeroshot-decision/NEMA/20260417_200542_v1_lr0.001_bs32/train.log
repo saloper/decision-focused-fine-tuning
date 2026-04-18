@@ -1,0 +1,8 @@
+2026-04-17 20:05:42,999 - INFO - Starting Experiment: baseline
+2026-04-17 20:05:43,002 - INFO - Run directory created at: results/experiments/moment-small-zeroshot-decision\NEMA\20260417_200542_v1_lr0.001_bs32
+2026-04-17 20:05:43,064 - INFO - Using device: cuda
+2026-04-17 20:05:47,405 - INFO - Initializing moment-small-zeroshot...
+2026-04-17 20:05:48,224 - INFO - Setting d_model to 512
+2026-04-17 20:05:50,260 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-04-17 20:05:50,260 - INFO - Enabling gradient checkpointing.
+2026-04-17 20:05:51,415 - INFO - Model is not trainable. Skipping training/validation. Running test only.

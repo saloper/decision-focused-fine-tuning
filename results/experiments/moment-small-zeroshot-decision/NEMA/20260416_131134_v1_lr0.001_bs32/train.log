@@ -1,0 +1,12 @@
+2026-04-16 13:11:34,589 - INFO - Starting Experiment: baseline
+2026-04-16 13:11:34,590 - INFO - Run directory created at: results/experiments/moment-small-zeroshot-decision\NEMA\20260416_131134_v1_lr0.001_bs32
+2026-04-16 13:11:34,637 - INFO - Using device: cuda
+2026-04-16 13:11:40,557 - INFO - Initializing moment-small-zeroshot...
+2026-04-16 13:11:41,033 - INFO - HTTP Request: HEAD https://huggingface.co/AutonLab/MOMENT-1-small/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-16 13:11:41,034 - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-16 13:11:41,053 - INFO - HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/AutonLab/MOMENT-1-small/411e288267f82cce86296dbe4d6c8bc533cc162f/config.json "HTTP/1.1 200 OK"
+2026-04-16 13:11:41,075 - INFO - Setting d_model to 512
+2026-04-16 13:11:43,281 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-04-16 13:11:43,283 - INFO - Enabling gradient checkpointing.
+2026-04-16 13:11:43,351 - INFO - HTTP Request: HEAD https://huggingface.co/AutonLab/MOMENT-1-small/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-04-16 13:11:44,927 - INFO - Model is not trainable. Skipping training/validation. Running test only.
