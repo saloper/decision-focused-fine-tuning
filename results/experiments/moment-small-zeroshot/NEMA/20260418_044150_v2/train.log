@@ -1,0 +1,13 @@
+2026-04-18 04:41:50,614 - INFO - Starting Experiment: baseline
+2026-04-18 04:41:50,620 - INFO - Run directory created at: results/experiments/moment-small-zeroshot\NEMA\20260418_044150_v2
+2026-04-18 04:41:51,870 - INFO - Using device: cuda
+2026-04-18 04:41:52,167 - INFO - Initializing moment-small-zeroshot...
+2026-04-18 04:41:54,405 - INFO - Setting d_model to 512
+2026-04-18 04:41:54,795 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
+2026-04-18 04:41:54,795 - INFO - Enabling gradient checkpointing.
+2026-04-18 04:41:55,744 - INFO - Model is not trainable. Skipping training/validation. Running test only.
+2026-04-18 04:44:21,938 - INFO - Final Train Metrics | MSE: 1422.9311 | MAE: 19.4269 | Profit: $-65.25
+2026-04-18 04:44:21,938 - INFO - Final Val Metrics | MSE: 1583.7607 | MAE: 18.1994 | Profit: $-10.08
+2026-04-18 04:44:21,938 - INFO - Final Test Metrics | MSE: 2249.9664 | MAE: 28.1306 | Profit: $-14.38
+2026-04-18 04:44:22,148 - INFO - Saving predictions...
+2026-04-18 04:44:22,341 - INFO - All outputs saved to: results/experiments/moment-small-zeroshot\NEMA\20260418_044150_v2. Experiment complete.

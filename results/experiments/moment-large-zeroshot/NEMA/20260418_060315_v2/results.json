@@ -1,0 +1,30 @@
+{
+    "training_history": {
+        "train": {
+            "mse": [],
+            "mae": [],
+            "profit": []
+        },
+        "val": {
+            "mse": [],
+            "mae": [],
+            "profit": []
+        }
+    },
+    "best_val_mse": null,
+    "final_train_results": {
+        "mse": 1382.5986518859863,
+        "mae": 18.95138576030731,
+        "profit": -12.177332987068146
+    },
+    "final_val_results": {
+        "mse": 1530.0643246968586,
+        "mae": 17.464212497075398,
+        "profit": 4.284029791854046
+    },
+    "test_results": {
+        "mse": 2198.1239217122397,
+        "mae": 27.7177091439565,
+        "profit": 10.641956302208623
+    }
+}

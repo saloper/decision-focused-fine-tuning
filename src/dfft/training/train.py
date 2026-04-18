@@ -6,6 +6,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import OneCycleLR
+from torch.utils.tensorboard import SummaryWriter
 
 from dfft.training.trainer import Trainer
 from dfft.training.model_registry import get_model
@@ -44,7 +45,7 @@ def create_df(results_dict, split_name):
             
     return pd.DataFrame(df_data)
 
-def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_dataset, val_dataset, test_dataset, device):
+def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_dataset, val_dataset, test_dataset, device, version="default"):
     logger = logging.getLogger()
     
     train_loader = DataLoader(train_dataset, batch_size=data_cfg["batch_size"], shuffle=True)
@@ -63,6 +64,29 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         
     model, trainable = get_model(model_name, config_model_kwargs)
     model.to(device)
+
+    # TensorBoard setup
+    # Determine a good root for TB logs based on run_dir path structure
+    paths_split = run_dir.split(os.sep)
+    if "experiments" in paths_split:
+        idx = paths_split.index("experiments")
+        tb_root = os.path.join(*paths_split[:idx], "tensorboard", version)
+        tb_log_dir = os.path.join(tb_root, *paths_split[idx+1:])
+    else:
+        tb_log_dir = os.path.join(run_dir, "tensorboard", version)
+    
+    writer = SummaryWriter(log_dir=tb_log_dir)
+
+    hparams_to_log = {
+        "model": model_name,
+        "version": str(version),
+        "batch_size": data_cfg.get("batch_size", 32)
+    }
+    for k, v in train_cfg.items():
+        if isinstance(v, (int, float, str, bool, torch.Tensor)):
+            hparams_to_log[k] = v
+        else:
+            hparams_to_log[k] = str(v)
 
     if trainable:
         optimizer = torch.optim.Adam(model.parameters(), lr=train_cfg["learning_rate"])
@@ -104,6 +128,13 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
             history["val"]["mae"].append(float(val_metrics["mae"]))
             history["val"]["profit"].append(float(val_metrics["profit"]))
 
+            writer.add_scalar("MSE/Train", train_metrics['mse'], epoch)
+            writer.add_scalar("MAE/Train", train_metrics['mae'], epoch)
+            writer.add_scalar("Profit/Train", train_metrics['profit'], epoch)
+            writer.add_scalar("MSE/Val", val_metrics['mse'], epoch)
+            writer.add_scalar("MAE/Val", val_metrics['mae'], epoch)
+            writer.add_scalar("Profit/Val", val_metrics['profit'], epoch)
+
             logger.info(f"Epoch {epoch:03d}/{train_cfg['epochs']} | "
                         f"Train MSE: {train_metrics['mse']:.4f} MAE: {train_metrics['mae']:.4f} | Profit: ${train_metrics['profit']:.2f} "
                         f"Val MSE: {val_metrics['mse']:.4f} MAE: {val_metrics['mae']:.4f} | Profit: ${val_metrics['profit']:.2f}" )
@@ -126,7 +157,31 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         val_metrics_final, val_results= trainer.evaluate(phase="Evaluating Val", loader=val_loader)
         test_metrics, test_results = trainer.test()
 
+        logger.info(f"Final Train Metrics | MSE: {train_metrics_final['mse']:.4f} | MAE: {train_metrics_final['mae']:.4f} | Profit: ${train_metrics_final['profit']:.2f}")
+        logger.info(f"Final Val Metrics | MSE: {val_metrics_final['mse']:.4f} | MAE: {val_metrics_final['mae']:.4f} | Profit: ${val_metrics_final['profit']:.2f}")
         logger.info(f"Final Test Metrics | MSE: {test_metrics['mse']:.4f} | MAE: {test_metrics['mae']:.4f} | Profit: ${test_metrics['profit']:.2f}")
+
+        writer.add_scalar("MSE/Test", test_metrics["mse"], 0)
+        writer.add_scalar("MAE/Test", test_metrics["mae"], 0)
+        writer.add_scalar("Profit/Test", test_metrics["profit"], 0)
+        
+        # Adding to hparams dict correctly
+        writer.add_hparams(
+            hparam_dict=hparams_to_log,
+            metric_dict={
+                "hparam/Best_Val_MSE": best_val_metric,
+                "hparam/Train_MSE": train_metrics_final["mse"],
+                "hparam/Train_MAE": train_metrics_final["mae"],
+                "hparam/Train_Profit": train_metrics_final["profit"],
+                "hparam/Val_MSE": val_metrics_final["mse"],
+                "hparam/Val_MAE": val_metrics_final["mae"],
+                "hparam/Val_Profit": val_metrics_final["profit"],
+                "hparam/Test_MSE": test_metrics["mse"],
+                "hparam/Test_MAE": test_metrics["mae"],
+                "hparam/Test_Profit": test_metrics["profit"]
+            },
+            run_name="."
+        )
 
         results = {
             "training_history": history,
@@ -159,6 +214,7 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         predictions_df.to_parquet(os.path.join(run_dir, "results.parquet"), engine='pyarrow', index=False)
         
         logger.info(f"All outputs saved to: {run_dir}. Experiment complete.")
+        writer.close()
     else:
         # Not trainable: Only run test set, skip training/val
         logger.info("Model is not trainable. Skipping training/validation. Running test only.")
@@ -178,6 +234,37 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         train_metrics_final, train_results = trainer.evaluate(phase="Evaluating Train", loader=train_loader)
         val_metrics_final, val_results= trainer.evaluate(phase="Evaluating Val", loader=val_loader)
         test_metrics, test_results = trainer.test()
+
+        logger.info(f"Final Train Metrics | MSE: {train_metrics_final['mse']:.4f} | MAE: {train_metrics_final['mae']:.4f} | Profit: ${train_metrics_final['profit']:.2f}")
+        logger.info(f"Final Val Metrics | MSE: {val_metrics_final['mse']:.4f} | MAE: {val_metrics_final['mae']:.4f} | Profit: ${val_metrics_final['profit']:.2f}")
+        logger.info(f"Final Test Metrics | MSE: {test_metrics['mse']:.4f} | MAE: {test_metrics['mae']:.4f} | Profit: ${test_metrics['profit']:.2f}")
+
+        writer.add_scalar("MSE/Test", test_metrics["mse"], train_cfg["epochs"])
+        writer.add_scalar("MAE/Test", test_metrics["mae"], train_cfg["epochs"])
+        writer.add_scalar("Profit/Test", test_metrics["profit"], train_cfg["epochs"])
+        writer.add_scalar("MSE/Train", train_metrics_final["mse"], train_cfg["epochs"])
+        writer.add_scalar("MAE/Train", train_metrics_final["mae"], train_cfg["epochs"])
+        writer.add_scalar("Profit/Train", train_metrics_final["profit"], train_cfg["epochs"])
+        writer.add_scalar("MSE/Val", val_metrics_final["mse"], train_cfg["epochs"])
+        writer.add_scalar("MAE/Val", val_metrics_final["mae"], train_cfg["epochs"])
+        writer.add_scalar("Profit/Val", val_metrics_final["profit"], train_cfg["epochs"])
+
+        writer.add_hparams(
+            hparam_dict=hparams_to_log,
+            metric_dict={
+                "hparam/Train_MSE": train_metrics_final["mse"],
+                "hparam/Train_MAE": train_metrics_final["mae"],
+                "hparam/Train_Profit": train_metrics_final["profit"],
+                "hparam/Val_MSE": val_metrics_final["mse"],
+                "hparam/Val_MAE": val_metrics_final["mae"],
+                "hparam/Val_Profit": val_metrics_final["profit"],
+                "hparam/Test_MSE": test_metrics["mse"],
+                "hparam/Test_MAE": test_metrics["mae"],
+                "hparam/Test_Profit": test_metrics["profit"]
+            },
+            run_name="."
+        )
+
         results = {
             "training_history": history,
             "best_val_mse": best_val_metric,
@@ -207,3 +294,4 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         # predictions_df.to_csv(os.path.join(run_dir, "predictions.csv"), index=False)
         predictions_df.to_parquet(os.path.join(run_dir, "results.parquet"), engine='pyarrow', index=False)
         logger.info(f"All outputs saved to: {run_dir}. Experiment complete.")
+        writer.close()

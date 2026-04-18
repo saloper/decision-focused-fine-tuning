@@ -35,9 +35,9 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     # Create Run Directory
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if train_cfg['decision_loss']:
-        run_dir = os.path.join(paths_cfg["output_path"], args.model + "-decision", args.dataset, f"{timestamp}_v{args.version}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
+        run_dir = os.path.join(paths_cfg["output_path"], args.model + "-decision", args.dataset, f"{timestamp}_v{args.version}")
     else:
-        run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_v{args.version}_lr{train_cfg['learning_rate']}_bs{data_cfg['batch_size']}")
+        run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_v{args.version}")
     os.makedirs(run_dir, exist_ok=True)
 
     # Setup Logging
@@ -92,20 +92,22 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
         train_dataset=train_dataset,
         val_dataset=val_dataset,
         test_dataset=test_dataset,
-        device=device
+        device=device,
+        version=args.version
     )
 
 if __name__ == "__main__":
     dataset = "NEMA"
-    # config = "configs/baseline.yaml"
-    config = "configs/decision.yaml"
-    model_size = ["moment-small"] #, "moment-base", "moment-large"]
+    config = "configs/baseline.yaml"
+    # config = "configs/decision.yaml"
+    model_size = ["moment-small", "moment-base", "moment-large"]
     # model_size = ["timesfm-base"]
     model_features = [ "-zeroshot", "-finetuned","-lora"]
+    # model_features = ["-finetuned"]
     model_list = []
     for size in model_size:
         for feature in model_features:
             model_list.append(size + feature)
     print("Running experiments for models:", model_list)
     for model in model_list:
-        main(config, model, dataset, "1")
+        main(config, model, dataset, "2")

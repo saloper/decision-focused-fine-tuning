@@ -1,0 +1,36 @@
+2026-04-18 05:45:08,275 - INFO - Starting Experiment: baseline
+2026-04-18 05:45:08,276 - INFO - Run directory created at: results/experiments/moment-base-lora\NEMA\20260418_054508_v2
+2026-04-18 05:45:08,291 - INFO - Using device: cuda
+2026-04-18 05:45:08,334 - INFO - Initializing moment-base-lora...
+2026-04-18 05:45:08,514 - INFO - Setting d_model to 768
+2026-04-18 05:45:09,696 - INFO - Initializing pre-trained transformer from google/flan-t5-base.
+2026-04-18 05:45:09,696 - INFO - Enabling gradient checkpointing.
+2026-04-18 05:45:10,241 - INFO - Starting training for 50 epochs...
+2026-04-18 05:45:58,899 - INFO - Epoch 001/50 | Train MSE: 1181.1040 MAE: 16.6640 | Profit: $28.60 Val MSE: 1457.8868 MAE: 15.8029 | Profit: $-1.14
+2026-04-18 05:46:00,746 - INFO - --> Validation MSE improved to 1457.8868. Saved best model.
+2026-04-18 05:46:56,464 - INFO - Epoch 002/50 | Train MSE: 1021.4757 MAE: 14.9499 | Profit: $45.05 Val MSE: 1397.7748 MAE: 15.5005 | Profit: $3.98
+2026-04-18 05:47:00,456 - INFO - --> Validation MSE improved to 1397.7748. Saved best model.
+2026-04-18 05:47:55,950 - INFO - Epoch 003/50 | Train MSE: 944.9907 MAE: 14.5052 | Profit: $51.13 Val MSE: 1380.2341 MAE: 15.2745 | Profit: $-4.23
+2026-04-18 05:47:59,868 - INFO - --> Validation MSE improved to 1380.2341. Saved best model.
+2026-04-18 05:48:57,124 - INFO - Epoch 004/50 | Train MSE: 907.0554 MAE: 14.0460 | Profit: $53.16 Val MSE: 1400.9352 MAE: 15.5280 | Profit: $-14.83
+2026-04-18 05:49:53,450 - INFO - Epoch 005/50 | Train MSE: 883.5061 MAE: 13.8136 | Profit: $55.91 Val MSE: 1367.6677 MAE: 15.3160 | Profit: $-13.70
+2026-04-18 05:49:55,207 - INFO - --> Validation MSE improved to 1367.6677. Saved best model.
+2026-04-18 05:50:50,387 - INFO - Epoch 006/50 | Train MSE: 900.9535 MAE: 13.6967 | Profit: $57.49 Val MSE: 1359.4621 MAE: 15.3114 | Profit: $-5.18
+2026-04-18 05:50:52,047 - INFO - --> Validation MSE improved to 1359.4621. Saved best model.
+2026-04-18 05:51:45,506 - INFO - Epoch 007/50 | Train MSE: 853.7603 MAE: 13.7322 | Profit: $57.25 Val MSE: 1373.4865 MAE: 15.3565 | Profit: $-15.17
+2026-04-18 05:52:41,992 - INFO - Epoch 008/50 | Train MSE: 857.8419 MAE: 13.5208 | Profit: $59.40 Val MSE: 1368.2251 MAE: 15.3123 | Profit: $-16.65
+2026-04-18 05:53:41,639 - INFO - Epoch 009/50 | Train MSE: 820.2074 MAE: 13.5450 | Profit: $60.52 Val MSE: 1387.3145 MAE: 15.7145 | Profit: $-10.16
+2026-04-18 05:54:36,589 - INFO - Epoch 010/50 | Train MSE: 794.5218 MAE: 13.2682 | Profit: $62.39 Val MSE: 1378.2870 MAE: 15.5096 | Profit: $-11.15
+2026-04-18 05:55:33,568 - INFO - Epoch 011/50 | Train MSE: 778.8477 MAE: 13.1447 | Profit: $62.07 Val MSE: 1388.4661 MAE: 15.8854 | Profit: $-16.09
+2026-04-18 05:56:34,175 - INFO - Epoch 012/50 | Train MSE: 770.4029 MAE: 13.0255 | Profit: $65.01 Val MSE: 1370.0561 MAE: 15.5197 | Profit: $-23.36
+2026-04-18 05:57:28,932 - INFO - Epoch 013/50 | Train MSE: 813.4177 MAE: 13.2307 | Profit: $61.27 Val MSE: 1410.9791 MAE: 16.1573 | Profit: $-25.02
+2026-04-18 05:58:24,468 - INFO - Epoch 014/50 | Train MSE: 755.4947 MAE: 13.0108 | Profit: $62.61 Val MSE: 1389.1713 MAE: 15.8294 | Profit: $-28.98
+2026-04-18 05:59:21,207 - INFO - Epoch 015/50 | Train MSE: 745.6346 MAE: 12.8441 | Profit: $65.27 Val MSE: 1395.6476 MAE: 16.0209 | Profit: $-8.53
+2026-04-18 06:00:17,015 - INFO - Epoch 016/50 | Train MSE: 732.4172 MAE: 12.7970 | Profit: $63.87 Val MSE: 1392.8468 MAE: 15.9327 | Profit: $-25.50
+2026-04-18 06:00:17,015 - INFO - Early stopping triggered after 10 epochs with no improvement.
+2026-04-18 06:00:17,018 - INFO - Loading best model for testing...
+2026-04-18 06:03:14,614 - INFO - Final Train Metrics | MSE: 768.5528 | MAE: 12.7741 | Profit: $74.25
+2026-04-18 06:03:14,615 - INFO - Final Val Metrics | MSE: 1359.4621 | MAE: 15.3114 | Profit: $-5.18
+2026-04-18 06:03:14,615 - INFO - Final Test Metrics | MSE: 1745.0914 | MAE: 23.0939 | Profit: $-3.97
+2026-04-18 06:03:14,957 - INFO - Saving predictions...
+2026-04-18 06:03:15,117 - INFO - All outputs saved to: results/experiments/moment-base-lora\NEMA\20260418_054508_v2. Experiment complete.
