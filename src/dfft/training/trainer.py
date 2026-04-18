@@ -168,7 +168,7 @@ class Trainer:
         'true_c_sol' : np.concatenate(all_true_c_sol, axis=0) if all_true_c_sol else np.array([]),
         'true_d_sol' : np.concatenate(all_true_d_sol, axis=0) if all_true_d_sol else np.array([]),
         'true_s_sol' : np.concatenate(all_true_s_sol, axis=0) if all_true_s_sol else np.array([]),
-        'true_proft' : np.concatenate(all_true_profit, axis=0) if all_true_profit else np.array([]),
+        'true_profit' : np.concatenate(all_true_profit, axis=0) if all_true_profit else np.array([]),
         'real_profit' : np.concatenate(all_real_profit, axis=0) if all_real_profit else np.array([])
         }
         
