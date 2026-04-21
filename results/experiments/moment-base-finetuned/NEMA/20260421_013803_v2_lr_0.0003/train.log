@@ -1,0 +1,51 @@
+2026-04-21 01:38:04,079 - INFO - Starting Experiment: baseline
+2026-04-21 01:38:04,080 - INFO - Run directory created at: results/experiments/moment-base-finetuned\NEMA\20260421_013803_v2_lr_0.0003
+2026-04-21 01:38:04,112 - INFO - Using device: cuda
+2026-04-21 01:38:04,157 - INFO - Initializing moment-base-finetuned...
+2026-04-21 01:38:04,407 - INFO - Setting d_model to 768
+2026-04-21 01:38:05,700 - INFO - Initializing pre-trained transformer from google/flan-t5-base.
+2026-04-21 01:38:05,702 - INFO - Enabling gradient checkpointing.
+2026-04-21 01:38:06,818 - INFO - Starting training for 50 epochs...
+2026-04-21 01:39:00,679 - INFO - Epoch 001/50 | Train MSE: 1268.4698 MAE: 17.1921 | Profit: $23.52 Val MSE: 1508.7884 MAE: 16.5574 | Profit: $-24.15
+2026-04-21 01:39:02,648 - INFO - --> Validation MSE improved to 1508.7884. Saved best model.
+2026-04-21 01:39:55,098 - INFO - Epoch 002/50 | Train MSE: 1127.1428 MAE: 15.6952 | Profit: $44.99 Val MSE: 1459.2578 MAE: 15.9508 | Profit: $-13.31
+2026-04-21 01:39:57,179 - INFO - --> Validation MSE improved to 1459.2578. Saved best model.
+2026-04-21 01:40:52,629 - INFO - Epoch 003/50 | Train MSE: 1063.5637 MAE: 15.1095 | Profit: $50.03 Val MSE: 1434.9530 MAE: 15.6976 | Profit: $-12.74
+2026-04-21 01:40:54,590 - INFO - --> Validation MSE improved to 1434.9530. Saved best model.
+2026-04-21 01:41:52,006 - INFO - Epoch 004/50 | Train MSE: 1018.9414 MAE: 14.9690 | Profit: $51.51 Val MSE: 1415.9600 MAE: 15.6085 | Profit: $-3.79
+2026-04-21 01:41:54,219 - INFO - --> Validation MSE improved to 1415.9600. Saved best model.
+2026-04-21 01:42:52,904 - INFO - Epoch 005/50 | Train MSE: 1024.3770 MAE: 14.9430 | Profit: $51.38 Val MSE: 1414.3421 MAE: 15.4171 | Profit: $-0.05
+2026-04-21 01:42:54,726 - INFO - --> Validation MSE improved to 1414.3421. Saved best model.
+2026-04-21 01:43:51,168 - INFO - Epoch 006/50 | Train MSE: 966.7792 MAE: 14.3798 | Profit: $53.15 Val MSE: 1396.0807 MAE: 15.4441 | Profit: $-4.55
+2026-04-21 01:43:52,612 - INFO - --> Validation MSE improved to 1396.0807. Saved best model.
+2026-04-21 01:44:44,607 - INFO - Epoch 007/50 | Train MSE: 953.1177 MAE: 14.3107 | Profit: $53.20 Val MSE: 1397.8833 MAE: 15.4327 | Profit: $-5.38
+2026-04-21 01:45:41,944 - INFO - Epoch 008/50 | Train MSE: 944.6721 MAE: 14.2541 | Profit: $56.27 Val MSE: 1386.0234 MAE: 15.3566 | Profit: $-7.55
+2026-04-21 01:45:43,757 - INFO - --> Validation MSE improved to 1386.0234. Saved best model.
+2026-04-21 01:46:37,511 - INFO - Epoch 009/50 | Train MSE: 915.6816 MAE: 14.0094 | Profit: $54.89 Val MSE: 1381.8909 MAE: 15.3078 | Profit: $-3.67
+2026-04-21 01:46:38,926 - INFO - --> Validation MSE improved to 1381.8909. Saved best model.
+2026-04-21 01:47:36,206 - INFO - Epoch 010/50 | Train MSE: 925.1049 MAE: 14.1057 | Profit: $55.20 Val MSE: 1380.4733 MAE: 15.3046 | Profit: $-1.35
+2026-04-21 01:47:37,567 - INFO - --> Validation MSE improved to 1380.4733. Saved best model.
+2026-04-21 01:48:37,089 - INFO - Epoch 011/50 | Train MSE: 911.0971 MAE: 13.8308 | Profit: $58.40 Val MSE: 1380.1965 MAE: 15.3928 | Profit: $-12.26
+2026-04-21 01:48:38,979 - INFO - --> Validation MSE improved to 1380.1965. Saved best model.
+2026-04-21 01:49:36,507 - INFO - Epoch 012/50 | Train MSE: 899.7017 MAE: 13.7635 | Profit: $54.74 Val MSE: 1381.8935 MAE: 15.3235 | Profit: $-5.50
+2026-04-21 01:50:34,934 - INFO - Epoch 013/50 | Train MSE: 931.7654 MAE: 13.8791 | Profit: $60.82 Val MSE: 1371.9742 MAE: 15.3284 | Profit: $-16.77
+2026-04-21 01:50:36,289 - INFO - --> Validation MSE improved to 1371.9742. Saved best model.
+2026-04-21 01:51:34,648 - INFO - Epoch 014/50 | Train MSE: 895.4138 MAE: 13.6879 | Profit: $56.04 Val MSE: 1361.1961 MAE: 15.3238 | Profit: $-6.34
+2026-04-21 01:51:36,147 - INFO - --> Validation MSE improved to 1361.1961. Saved best model.
+2026-04-21 01:52:34,493 - INFO - Epoch 015/50 | Train MSE: 889.9345 MAE: 13.8896 | Profit: $58.46 Val MSE: 1368.5151 MAE: 15.2165 | Profit: $-8.22
+2026-04-21 01:53:28,775 - INFO - Epoch 016/50 | Train MSE: 853.8736 MAE: 13.5110 | Profit: $60.47 Val MSE: 1370.7801 MAE: 15.1410 | Profit: $-4.48
+2026-04-21 01:54:18,388 - INFO - Epoch 017/50 | Train MSE: 848.6776 MAE: 13.4876 | Profit: $60.05 Val MSE: 1367.6940 MAE: 15.2340 | Profit: $-11.41
+2026-04-21 01:55:10,764 - INFO - Epoch 018/50 | Train MSE: 841.2041 MAE: 13.3731 | Profit: $60.02 Val MSE: 1377.3345 MAE: 15.4084 | Profit: $-11.11
+2026-04-21 01:56:02,997 - INFO - Epoch 019/50 | Train MSE: 827.8080 MAE: 13.3165 | Profit: $61.67 Val MSE: 1367.3851 MAE: 15.3342 | Profit: $-11.97
+2026-04-21 01:56:54,283 - INFO - Epoch 020/50 | Train MSE: 832.9569 MAE: 13.3340 | Profit: $62.67 Val MSE: 1363.5577 MAE: 15.3002 | Profit: $-7.02
+2026-04-21 01:57:45,946 - INFO - Epoch 021/50 | Train MSE: 825.2524 MAE: 13.3418 | Profit: $62.57 Val MSE: 1368.9229 MAE: 15.4072 | Profit: $-10.68
+2026-04-21 01:58:38,584 - INFO - Epoch 022/50 | Train MSE: 824.2149 MAE: 13.3327 | Profit: $61.82 Val MSE: 1369.9467 MAE: 15.4384 | Profit: $-16.00
+2026-04-21 01:59:32,997 - INFO - Epoch 023/50 | Train MSE: 812.5542 MAE: 13.1150 | Profit: $61.93 Val MSE: 1367.0511 MAE: 15.2940 | Profit: $-12.04
+2026-04-21 02:00:22,905 - INFO - Epoch 024/50 | Train MSE: 812.4641 MAE: 13.1206 | Profit: $63.27 Val MSE: 1365.9137 MAE: 15.3472 | Profit: $-14.91
+2026-04-21 02:00:22,907 - INFO - Early stopping triggered after 10 epochs with no improvement.
+2026-04-21 02:00:22,907 - INFO - Loading best model for testing...
+2026-04-21 02:03:04,379 - INFO - Final Train Metrics | MSE: 816.8398 | MAE: 13.6848 | Profit: $77.08
+2026-04-21 02:03:04,381 - INFO - Final Val Metrics | MSE: 1361.1961 | MAE: 15.3238 | Profit: $-6.34
+2026-04-21 02:03:04,381 - INFO - Final Test Metrics | MSE: 1736.7568 | MAE: 23.2010 | Profit: $-9.19
+2026-04-21 02:03:04,678 - INFO - Saving predictions...
+2026-04-21 02:03:04,991 - INFO - All outputs saved to: results/experiments/moment-base-finetuned\NEMA\20260421_013803_v2_lr_0.0003. Experiment complete.

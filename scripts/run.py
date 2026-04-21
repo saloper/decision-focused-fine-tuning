@@ -110,4 +110,4 @@ if __name__ == "__main__":
             model_list.append(size + feature)
     print("Running experiments for models:", model_list)
     for model in model_list:
-        main(config, model, dataset, "2")
+        main(config, model, dataset, "2") 
