@@ -9,6 +9,7 @@ from scripts.run import main
 
 def run_experiments():
     base_config_path = "configs/baseline.yaml"
+    base_config_path = "configs/decision.yaml"
     dataset = "NEMA"
     model_sizes = ["moment-small", "moment-base", "moment-large"]
     model_features = ["-finetuned", "-lora"]
@@ -38,7 +39,7 @@ def run_experiments():
         temp_config["training"]["learning_rate"] = lr
         
         # Save temp config
-        temp_config_path = f"configs/temp/baseline_lr_{lr}.yaml"
+        temp_config_path = f"configs/temp/decision_lr_{lr}.yaml"
         os.makedirs(os.path.dirname(temp_config_path), exist_ok=True)
         with open(temp_config_path, "w") as f:
             yaml.dump(temp_config, f)

@@ -28,5 +28,6 @@ training:
   decision_loss: False
   loss_function: "mse" 
   patience: 10
+  save_weights: False
   
 

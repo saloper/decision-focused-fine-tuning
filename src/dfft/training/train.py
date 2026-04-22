@@ -215,6 +215,14 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
         
         logger.info(f"All outputs saved to: {run_dir}. Experiment complete.")
         writer.close()
+
+        if train_cfg.get("save_weights", False):
+            try:
+                os.remove(best_model_path)
+            except FileNotFoundError:
+                logger.warning(f"Best model file not found for cleanup: {best_model_path}")
+                pass
+
     else:
         # Not trainable: Only run test set, skip training/val
         logger.info("Model is not trainable. Skipping training/validation. Running test only.")
