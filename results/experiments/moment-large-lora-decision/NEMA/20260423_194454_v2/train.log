@@ -1,0 +1,35 @@
+2026-04-23 19:44:54,237 - INFO - Starting Experiment: baseline
+2026-04-23 19:44:54,237 - INFO - Run directory created at: results/experiments/moment-large-lora-decision/NEMA/20260423_194454_v2_lr_0.001
+2026-04-23 19:44:54,237 - INFO - Using device: cuda
+2026-04-23 19:44:54,264 - INFO - Initializing moment-large-lora...
+2026-04-23 19:44:54,385 - INFO - Setting d_model to 1024
+2026-04-23 19:44:59,221 - INFO - Initializing pre-trained transformer from google/flan-t5-large.
+2026-04-23 19:44:59,222 - INFO - Enabling gradient checkpointing.
+2026-04-23 19:45:00,135 - INFO - Starting training for 100 epochs...
+2026-04-23 19:45:09,360 - INFO - Epoch 001/100 | Train MSE: 2373.0310 MAE: 27.0334 | Profit: $56.85 Val MSE: 2419.3210 MAE: 26.2230 | Profit: $71.65
+2026-04-23 19:45:10,797 - INFO - --> Validation Profit improved to $71.65. Saved best model.
+2026-04-23 19:45:19,886 - INFO - Epoch 002/100 | Train MSE: 3927.3266 MAE: 38.5727 | Profit: $87.74 Val MSE: 3061.2981 MAE: 30.8998 | Profit: $65.91
+2026-04-23 19:45:28,847 - INFO - Epoch 003/100 | Train MSE: 4276.5785 MAE: 40.2474 | Profit: $89.91 Val MSE: 3188.5354 MAE: 31.2658 | Profit: $73.69
+2026-04-23 19:45:31,320 - INFO - --> Validation Profit improved to $73.69. Saved best model.
+2026-04-23 19:45:39,955 - INFO - Epoch 004/100 | Train MSE: 4417.2979 MAE: 41.0089 | Profit: $93.05 Val MSE: 3275.7385 MAE: 32.2236 | Profit: $71.66
+2026-04-23 19:45:48,595 - INFO - Epoch 005/100 | Train MSE: 4584.0571 MAE: 42.2017 | Profit: $94.18 Val MSE: 3215.3430 MAE: 31.4641 | Profit: $73.45
+2026-04-23 19:45:57,178 - INFO - Epoch 006/100 | Train MSE: 4529.9927 MAE: 41.5693 | Profit: $97.25 Val MSE: 3245.7144 MAE: 31.9703 | Profit: $72.72
+2026-04-23 19:46:05,758 - INFO - Epoch 007/100 | Train MSE: 4493.5028 MAE: 41.7198 | Profit: $98.26 Val MSE: 3245.0125 MAE: 31.8645 | Profit: $73.76
+2026-04-23 19:46:08,174 - INFO - --> Validation Profit improved to $73.76. Saved best model.
+2026-04-23 19:46:16,894 - INFO - Epoch 008/100 | Train MSE: 4494.7776 MAE: 41.7285 | Profit: $98.23 Val MSE: 3248.7195 MAE: 32.0428 | Profit: $70.85
+2026-04-23 19:46:25,695 - INFO - Epoch 009/100 | Train MSE: 4623.0520 MAE: 41.9542 | Profit: $100.95 Val MSE: 3233.4272 MAE: 31.9273 | Profit: $69.46
+2026-04-23 19:46:34,186 - INFO - Epoch 010/100 | Train MSE: 4495.0713 MAE: 41.7883 | Profit: $104.75 Val MSE: 3221.7720 MAE: 31.7927 | Profit: $72.42
+2026-04-23 19:46:42,847 - INFO - Epoch 011/100 | Train MSE: 4502.9926 MAE: 41.8231 | Profit: $101.77 Val MSE: 3211.4934 MAE: 31.6546 | Profit: $69.86
+2026-04-23 19:46:51,517 - INFO - Epoch 012/100 | Train MSE: 4314.4924 MAE: 40.7600 | Profit: $103.85 Val MSE: 3180.9521 MAE: 31.3496 | Profit: $70.96
+2026-04-23 19:47:00,084 - INFO - Epoch 013/100 | Train MSE: 4366.8699 MAE: 40.9001 | Profit: $103.87 Val MSE: 3195.9053 MAE: 31.7688 | Profit: $70.31
+2026-04-23 19:47:08,700 - INFO - Epoch 014/100 | Train MSE: 4494.3965 MAE: 41.5228 | Profit: $104.91 Val MSE: 3165.0862 MAE: 31.3727 | Profit: $70.89
+2026-04-23 19:47:17,330 - INFO - Epoch 015/100 | Train MSE: 4316.7600 MAE: 40.6650 | Profit: $106.65 Val MSE: 3099.4990 MAE: 30.7249 | Profit: $67.43
+2026-04-23 19:47:25,964 - INFO - Epoch 016/100 | Train MSE: 4245.2512 MAE: 39.9291 | Profit: $107.49 Val MSE: 3058.8333 MAE: 30.1668 | Profit: $67.56
+2026-04-23 19:47:34,670 - INFO - Epoch 017/100 | Train MSE: 4192.7442 MAE: 39.7269 | Profit: $109.55 Val MSE: 3055.0320 MAE: 30.3640 | Profit: $68.77
+2026-04-23 19:47:34,671 - INFO - Early stopping triggered after 10 epochs with no improvement.
+2026-04-23 19:47:34,671 - INFO - Loading best model for testing...
+2026-04-23 19:47:43,339 - INFO - Final Train Metrics | MSE: 4396.8535 | MAE: 41.6949 | Profit: $107.21
+2026-04-23 19:47:43,339 - INFO - Final Val Metrics | MSE: 3245.0125 | MAE: 31.8645 | Profit: $73.76
+2026-04-23 19:47:43,339 - INFO - Final Test Metrics | MSE: 4846.3784 | MAE: 46.6462 | Profit: $119.80
+2026-04-23 19:47:43,342 - INFO - Saving predictions...
+2026-04-23 19:47:43,426 - INFO - All outputs saved to: results/experiments/moment-large-lora-decision/NEMA/20260423_194454_v2_lr_0.001. Experiment complete.

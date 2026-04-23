@@ -1,0 +1,13 @@
+2026-04-23 20:57:19,556 - INFO - Starting Experiment: baseline
+2026-04-23 20:57:19,556 - INFO - Run directory created at: results/experiments/moment-large-zeroshot/NEMA/20260423_205719_v2_lr_0.001
+2026-04-23 20:57:19,692 - INFO - Using device: cuda
+2026-04-23 20:57:19,756 - INFO - Initializing moment-large-zeroshot...
+2026-04-23 20:57:20,913 - INFO - Setting d_model to 1024
+2026-04-23 20:57:26,135 - INFO - Initializing pre-trained transformer from google/flan-t5-large.
+2026-04-23 20:57:26,136 - INFO - Enabling gradient checkpointing.
+2026-04-23 20:57:27,071 - INFO - Model is not trainable. Skipping training/validation. Running test only.
+2026-04-23 20:57:33,498 - INFO - Final Train Metrics | MSE: 1918.6675 | MAE: 23.3963 | Profit: $6.22
+2026-04-23 20:57:33,498 - INFO - Final Val Metrics | MSE: 1483.7634 | MAE: 16.2588 | Profit: $3.58
+2026-04-23 20:57:33,498 - INFO - Final Test Metrics | MSE: 2087.7471 | MAE: 26.2044 | Profit: $11.48
+2026-04-23 20:57:33,503 - INFO - Saving predictions...
+2026-04-23 20:57:33,600 - INFO - All outputs saved to: results/experiments/moment-large-zeroshot/NEMA/20260423_205719_v2_lr_0.001. Experiment complete.
