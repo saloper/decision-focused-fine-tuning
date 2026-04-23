@@ -27,9 +27,9 @@ def main(config_path, model_name, dataset_name, version):
     # Create Run Directory
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if train_cfg['decision_loss']:
-        run_dir = os.path.join(paths_cfg["output_path"], model_name + "-decision", dataset_name, f"{timestamp}_v{version}")
+        run_dir = os.path.join(paths_cfg["output_path"], model_name + "-decision", dataset_name, f"{timestamp}_v{version}_lr_{train_cfg['learning_rate']}")
     else:
-        run_dir = os.path.join(paths_cfg["output_path"], model_name, dataset_name, f"{timestamp}_v{version}")
+        run_dir = os.path.join(paths_cfg["output_path"], model_name, dataset_name, f"{timestamp}_v{version}_lr_{train_cfg['learning_rate']}")
     os.makedirs(run_dir, exist_ok=True)
 
     # Setup Logging
@@ -88,13 +88,13 @@ def main(config_path, model_name, dataset_name, version):
         version=version
     )
     
-    if train_cfg['decision_loss']:
-        drive_dir = os.path.join('/content/drive/MyDrive/DFFT/', model_name + "-decision", dataset_name, f"{timestamp}_v{version}")
-    else:
-        drive_dir = os.path.join('/content/drive/MyDrive/DFFT/', model_name, dataset_name, f"{timestamp}_v{version}")
-    # Copy the entire directory tree
-    shutil.copytree(run_dir, drive_dir, dirs_exist_ok=True)
-    print(f"{drive_dir} saved to Drive!")
+    # if train_cfg['decision_loss']:
+    #     drive_dir = os.path.join('/content/drive/MyDrive/DFFT/', model_name + "-decision", dataset_name, f"{timestamp}_v{version}")
+    # else:
+    #     drive_dir = os.path.join('/content/drive/MyDrive/DFFT/', model_name, dataset_name, f"{timestamp}_v{version}")
+    # # Copy the entire directory tree
+    # shutil.copytree(run_dir, drive_dir, dirs_exist_ok=True)
+    # print(f"{drive_dir} saved to Drive!")
 
 if __name__ == "__main__":
     # 2. Put argparse here so it only runs once when the script is executed

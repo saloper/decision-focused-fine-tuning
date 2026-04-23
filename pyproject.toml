@@ -16,6 +16,7 @@ dependencies = [
     "accelerate==1.13.0",
     "peft==0.13.2",
     "safetensors==0.7.0",
+    "momentfm==0.1.4",
 
     # Optimization Shared Base (Pinned for diffcp compatibility)
     "cvxpy==1.7.5",
@@ -34,12 +35,16 @@ dependencies = [
     "requests==2.33.1",
     "pyyaml==6.0.3",
     "pillow==12.1.1",
+    "pyarrow",
+
+    #Visualization and Logs
+    "matplotlib",
+    "tensorboard",
 ]
 
 [project.optional-dependencies]
 # Installed via: pip install -e .[moment]
 moment = [
-    "momentfm==0.1.4",
     "transformers==4.33.3",
     "huggingface-hub==0.24.0"
 ]

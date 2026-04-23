@@ -9,7 +9,7 @@ from dfft.models.aribtrage import BatteryAbritrageLayer
 class Trainer:
     def __init__(self, model: nn.Module, train_loader: DataLoader, val_loader: DataLoader, test_loader: DataLoader,
                  optimizer: torch.optim.Optimizer, device: str,
-                 scheduler=None, max_norm: float = 5.0, horizon: int = 24, decision_loss: bool = False):
+                 scheduler=None, max_norm: float = 5.0, horizon: int = 24, decision_loss: bool = False, gamma: float = 1e-1 ):
         self.model = model.to(device)
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -21,7 +21,8 @@ class Trainer:
         self.mae_criterion = nn.L1Loss().to(device)
         #Create optimization layer to compute solution
         self.decision_loss = decision_loss
-        self.bess = BatteryAbritrageLayer(T=horizon).to(device)
+        self.gamma = gamma
+        self.bess = BatteryAbritrageLayer(T=horizon, gamma=gamma).to(device)
 
         self.device = device
         self.scheduler = scheduler
@@ -68,6 +69,9 @@ class Trainer:
                     predictions = self.model(x, hours=hours, days_of_week=days_of_week)
                 else:
                     predictions = self.model(x)
+
+                #Make sure gamma is set to smooth gradients
+                self.bess.gamma = self.gamma
                 mse, mae, profit = self._compute_metrics(predictions, y)
     
                 #Set loss function
@@ -135,6 +139,8 @@ class Trainer:
                         predictions = self.model(x, hours=hours, days_of_week=days_of_week)
                     else:
                         predictions = self.model(x)
+                    #Make sure gamma is set to zero for test time
+                    self.bess.gamma = 0
                     mse, mae, profit = self._compute_metrics(predictions, y)
                     pred_c_sol, pred_d_sol, pred_s_sol = self.bess(predictions)
                     true_c_sol, true_d_sol, true_s_sol = self.bess(y)

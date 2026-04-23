@@ -66,14 +66,7 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
     model.to(device)
 
     # TensorBoard setup
-    # Determine a good root for TB logs based on run_dir path structure
-    paths_split = run_dir.split(os.sep)
-    if "experiments" in paths_split:
-        idx = paths_split.index("experiments")
-        tb_root = os.path.join(*paths_split[:idx], "tensorboard", version)
-        tb_log_dir = os.path.join(tb_root, *paths_split[idx+1:])
-    else:
-        tb_log_dir = os.path.join(run_dir, "tensorboard", version)
+    tb_log_dir = os.path.join(run_dir, f"tensorboard", f"{version}_lr_{train_cfg['learning_rate']}")
     
     writer = SummaryWriter(log_dir=tb_log_dir)
 
@@ -103,7 +96,8 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
             scheduler=scheduler,
             max_norm=5.0,
             horizon=data_cfg["output_len"],
-            decision_loss=train_cfg["decision_loss"]
+            decision_loss=train_cfg["decision_loss"],
+            gamma = train_cfg["gamma"]
         )
 
         history = {"train": {"mse": [], "mae": [], "profit": []}, "val": {"mse": [], "mae": [], "profit": []}}

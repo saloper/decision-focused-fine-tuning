@@ -14,7 +14,7 @@ class BatteryAbritrageLayer(torch.nn.Module):
     -eta_c: charge efficiency
     -eta_d: dis-charge efficiency 
     """
-    def __init__(self, T=24, p_max = 1, e_max = 4, eta_c = 0.95, eta_d = 0.95, gamma=1e-3):
+    def __init__(self, T=24, p_max = 1, e_max = 4, eta_c = 0.95, eta_d = 0.95, gamma=1e-1):
         super().__init__()
         #Define decision variables
         self.c = cp.Variable(T, nonneg = True) #charge
