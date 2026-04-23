@@ -1,7 +1,7 @@
 #To Update
 #Raw Data
 data/raw
-
+*.txt
 #Excel files 
 *.xlsx
 

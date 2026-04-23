@@ -108,7 +108,10 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
 
         history = {"train": {"mse": [], "mae": [], "profit": []}, "val": {"mse": [], "mae": [], "profit": []}}
         patience = train_cfg.get("patience", 10)
-        best_val_metric = float('inf')
+        if train_cfg["decision_loss"]:
+          best_val_metric = -float('inf')
+        else:
+          best_val_metric = float('inf')
         epochs_no_improve = 0
         best_model_path = os.path.join(run_dir, "best_model.pt")
 
@@ -139,16 +142,28 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
                         f"Train MSE: {train_metrics['mse']:.4f} MAE: {train_metrics['mae']:.4f} | Profit: ${train_metrics['profit']:.2f} "
                         f"Val MSE: {val_metrics['mse']:.4f} MAE: {val_metrics['mae']:.4f} | Profit: ${val_metrics['profit']:.2f}" )
 
-            if val_metrics["mse"] < best_val_metric:
-                best_val_metric = val_metrics["mse"]
-                epochs_no_improve = 0
-                torch.save(model.state_dict(), best_model_path)
-                logger.info(f"--> Validation MSE improved to {best_val_metric:.4f}. Saved best model.")
+            if train_cfg["decision_loss"]:
+              if val_metrics["profit"] > best_val_metric:
+                  best_val_metric = val_metrics["profit"]
+                  epochs_no_improve = 0
+                  torch.save(model.state_dict(), best_model_path)
+                  logger.info(f"--> Validation Profit improved to ${best_val_metric:.2f}. Saved best model.")
+              else:
+                  epochs_no_improve += 1
+                  if epochs_no_improve >= patience:
+                      logger.info(f"Early stopping triggered after {patience} epochs with no improvement.")
+                      break
             else:
-                epochs_no_improve += 1
-                if epochs_no_improve >= patience:
-                    logger.info(f"Early stopping triggered after {patience} epochs with no improvement.")
-                    break
+              if val_metrics["mse"] < best_val_metric:
+                  best_val_metric = val_metrics["mse"]
+                  epochs_no_improve = 0
+                  torch.save(model.state_dict(), best_model_path)
+                  logger.info(f"--> Validation MSE improved to {best_val_metric:.4f}. Saved best model.")
+              else:
+                  epochs_no_improve += 1
+                  if epochs_no_improve >= patience:
+                      logger.info(f"Early stopping triggered after {patience} epochs with no improvement.")
+                      break
 
         logger.info("Loading best model for testing...")
         model.load_state_dict(torch.load(best_model_path))
