@@ -1,0 +1,27 @@
+data:
+  batch_size: 32
+  input_len: 512
+  model_parameter:
+    lora_alpha: 16
+    lora_dropout: 0.1
+    r: 8
+  output_len: 24
+  test_end_date: '2025-12-31'
+  test_start_date: '2025-01-01'
+  train_end_date: '2023-12-31'
+  train_start_date: '2022-01-01'
+  val_end_date: '2024-12-31'
+  val_start_date: '2024-01-01'
+experiment_name: baseline
+paths:
+  input_filename: NEMA_LMP.parquet
+  output_path: results/experiments/
+  processed_input_path: data/processed/
+  raw_input_path: data/raw/
+training:
+  decision_loss: true
+  epochs: 50
+  learning_rate: 0.0003
+  loss_function: profit
+  patience: 10
+  save_weights: false
