@@ -8,7 +8,7 @@ paths:
   output_path: "results/experiments/"
 
 data:
-  train_start_date: '2022-01-01' #Start and End dates are inclusive
+  train_start_date: '2021-01-01' #Start and End dates are inclusive
   train_end_date: '2023-12-31'
   val_start_date: '2024-01-01'
   val_end_date: '2024-12-31'
@@ -25,6 +25,7 @@ data:
 training:
   epochs: 100
   learning_rate: 0.001
+  gamma: 0.1
   decision_loss: False
   loss_function: "mse" 
   patience: 10

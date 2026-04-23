@@ -99,21 +99,16 @@ class Trainer:
 
     def evaluate(self, phase="Validating", loader=None):
         self.model.eval()
-        mse_losses = []
-        mae_losses = []
-        profit_losses = []
         
         all_preds = []
         all_trues = []
         all_pred_c_sol = []
         all_pred_d_sol = []
         all_pred_s_sol = []
-        all_pred_profit = []
         all_true_c_sol = []
         all_true_d_sol = []
         all_true_s_sol = []
-        all_true_profit = []
-        all_real_profit = []
+        
         if loader is None:
             loader = self.val_loader
         
@@ -141,42 +136,44 @@ class Trainer:
                         predictions = self.model(x)
                     #Make sure gamma is set to zero for test time
                     self.bess.gamma = 0
-                    mse, mae, profit = self._compute_metrics(predictions, y)
+
                     pred_c_sol, pred_d_sol, pred_s_sol = self.bess(predictions)
                     true_c_sol, true_d_sol, true_s_sol = self.bess(y)
                     
-                mse_losses.append(mse.item())
-                mae_losses.append(mae.item())
-                profit_losses.append(profit.item())
-                
-                all_preds.append(predictions.cpu().numpy())
-                all_trues.append(y.cpu().numpy())
-                all_pred_c_sol.append(pred_c_sol.cpu().numpy())
-                all_pred_d_sol.append(pred_d_sol.cpu().numpy())
-                all_pred_s_sol.append(pred_s_sol.cpu().numpy())
-                all_pred_profit.append(torch.sum(predictions * (pred_d_sol - pred_c_sol),dim=1).cpu().numpy())
-                all_true_c_sol.append(true_c_sol.cpu().numpy())
-                all_true_d_sol.append(true_d_sol.cpu().numpy())
-                all_true_s_sol.append(true_s_sol.cpu().numpy())
-                all_true_profit.append(torch.sum(y * (true_d_sol - true_c_sol),dim=1).cpu().numpy())
-                all_real_profit.append(torch.sum(y * (pred_d_sol - pred_c_sol),dim=1).cpu().numpy())
+                all_preds.append(predictions.cpu())
+                all_trues.append(y.cpu())
+                all_pred_c_sol.append(pred_c_sol.cpu())
+                all_pred_d_sol.append(pred_d_sol.cpu())
+                all_pred_s_sol.append(pred_s_sol.cpu())
+                all_true_c_sol.append(true_c_sol.cpu())
+                all_true_d_sol.append(true_d_sol.cpu())
+                all_true_s_sol.append(true_s_sol.cpu())
 
+        # Concatenate tensors 
+        def cat_and_numpy(tensor_list):
+            return torch.cat(tensor_list, dim=0).numpy() if tensor_list else np.array([])
 
-
-        metrics = {"mse": np.average(mse_losses), "mae": np.average(mae_losses), "profit": np.average(profit_losses)}
         results = {
-        'pred' : np.concatenate(all_preds, axis=0) if all_preds else np.array([]),
-        'true' : np.concatenate(all_trues, axis=0) if all_trues else np.array([]),
-        'pred_c_sol' : np.concatenate(all_pred_c_sol, axis=0) if all_pred_c_sol else np.array([]),
-        'pred_d_sol' : np.concatenate(all_pred_d_sol, axis=0) if all_pred_d_sol else np.array([]),
-        'pred_s_sol' : np.concatenate(all_pred_s_sol, axis=0) if all_pred_s_sol else np.array([]),
-        'pred_profit' : np.concatenate(all_pred_profit, axis=0) if all_pred_profit else np.array([]),
-        'true_c_sol' : np.concatenate(all_true_c_sol, axis=0) if all_true_c_sol else np.array([]),
-        'true_d_sol' : np.concatenate(all_true_d_sol, axis=0) if all_true_d_sol else np.array([]),
-        'true_s_sol' : np.concatenate(all_true_s_sol, axis=0) if all_true_s_sol else np.array([]),
-        'true_profit' : np.concatenate(all_true_profit, axis=0) if all_true_profit else np.array([]),
-        'real_profit' : np.concatenate(all_real_profit, axis=0) if all_real_profit else np.array([])
+            'pred': cat_and_numpy(all_preds),
+            'true': cat_and_numpy(all_trues),
+            'pred_c_sol': cat_and_numpy(all_pred_c_sol),
+            'pred_d_sol': cat_and_numpy(all_pred_d_sol),
+            'pred_s_sol': cat_and_numpy(all_pred_s_sol),
+            'true_c_sol': cat_and_numpy(all_true_c_sol),
+            'true_d_sol': cat_and_numpy(all_true_d_sol),
+            'true_s_sol': cat_and_numpy(all_true_s_sol),
         }
+
+        #metric calculations
+        mse = np.mean((results['pred'] - results['true']) ** 2)
+        mae = np.mean(np.abs(results['pred'] - results['true']))
+        
+        #profit calculations
+        results['pred_profit'] = np.sum(results['pred'] * (results['pred_d_sol'] - results['pred_c_sol']), axis=1)
+        results['true_profit'] = np.sum(results['true'] * (results['true_d_sol'] - results['true_c_sol']), axis=1)
+        results['real_profit'] = np.sum(results['true'] * (results['pred_d_sol'] - results['pred_c_sol']), axis=1)
+
+        metrics = {"mse": mse, "mae": mae, "profit": np.mean(results['real_profit'])}
         
         return metrics, results
 
