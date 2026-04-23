@@ -1,8 +1,0 @@
-2026-04-17 20:12:11,175 - INFO - Starting Experiment: baseline
-2026-04-17 20:12:11,175 - INFO - Run directory created at: results/experiments/moment-small-finetuned-decision\NEMA\20260417_201211_v1_lr0.001_bs32
-2026-04-17 20:12:11,200 - INFO - Using device: cuda
-2026-04-17 20:12:11,241 - INFO - Initializing moment-small-finetuned...
-2026-04-17 20:12:11,380 - INFO - Setting d_model to 512
-2026-04-17 20:12:11,993 - INFO - Initializing pre-trained transformer from google/flan-t5-small.
-2026-04-17 20:12:11,994 - INFO - Enabling gradient checkpointing.
-2026-04-17 20:12:15,599 - INFO - Starting training for 2 epochs...

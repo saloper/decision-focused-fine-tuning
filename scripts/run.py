@@ -5,10 +5,7 @@ from xml.parsers.expat import model
 import yaml
 import datetime
 import shutil
-
 import torch
-import sys
-import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
@@ -16,16 +13,11 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 from src.dfft.data.dataset import NEMADataset
 from src.dfft.training.train import setup_logger, run_training_experiment
 
-def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", dataset_name="NEMA", version="version1"):
-    parser = argparse.ArgumentParser(description="Train a decision-focused model")
-    parser.add_argument("--config", type=str, default=config_path, help="Path to config file")
-    parser.add_argument("--model", type=str, default=model_name, help="Model name and variation")
-    parser.add_argument("--dataset", type=str, default=dataset_name, help="Dataset name")
-    parser.add_argument("--version", type=str, default=version, help="Version name")
-    args = parser.parse_args()
-
+# 1. Remove default arguments and argparse from the main function definition
+def main(config_path, model_name, dataset_name, version):
+    
     # Load Config
-    with open(args.config, "r") as f:
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
     data_cfg = config["data"]
@@ -35,9 +27,9 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     # Create Run Directory
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if train_cfg['decision_loss']:
-        run_dir = os.path.join(paths_cfg["output_path"], args.model + "-decision", args.dataset, f"{timestamp}_v{args.version}")
+        run_dir = os.path.join(paths_cfg["output_path"], model_name + "-decision", dataset_name, f"{timestamp}_v{version}")
     else:
-        run_dir = os.path.join(paths_cfg["output_path"], args.model, args.dataset, f"{timestamp}_v{args.version}")
+        run_dir = os.path.join(paths_cfg["output_path"], model_name, dataset_name, f"{timestamp}_v{version}")
     os.makedirs(run_dir, exist_ok=True)
 
     # Setup Logging
@@ -46,7 +38,7 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     logger.info(f"Run directory created at: {run_dir}")
 
     # Copy config
-    shutil.copy(args.config, os.path.join(run_dir, "config.yaml"))
+    shutil.copy(config_path, os.path.join(run_dir, "config.yaml"))
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info(f"Using device: {device}")
@@ -55,7 +47,7 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
     data_path = os.path.join(paths_cfg["processed_input_path"], paths_cfg["input_filename"])
     
     # Determine if temporal features are needed for this model
-    include_time = "time" in args.model.lower() and "moment" in args.model.lower()  # Only MOMENTTime models include temporal features
+    include_time = "time" in model_name.lower() and "moment" in model_name.lower()  
     
     train_dataset = NEMADataset(
         file=data_path,
@@ -86,28 +78,45 @@ def main(config_path="configs/baseline.yaml", model_name="moment-base-frozen", d
 
     run_training_experiment(
         run_dir=run_dir,
-        model_name=args.model,
+        model_name=model_name,
         data_cfg=data_cfg,
         train_cfg=train_cfg,
         train_dataset=train_dataset,
         val_dataset=val_dataset,
         test_dataset=test_dataset,
         device=device,
-        version=args.version
+        version=version
     )
+    
+    if train_cfg['decision_loss']:
+        drive_dir = os.path.join('/content/drive/MyDrive/DFFT/', model_name + "-decision", dataset_name, f"{timestamp}_v{version}")
+    else:
+        drive_dir = os.path.join('/content/drive/MyDrive/DFFT/', model_name, dataset_name, f"{timestamp}_v{version}")
+    # Copy the entire directory tree
+    shutil.copytree(run_dir, drive_dir, dirs_exist_ok=True)
+    print(f"{drive_dir} saved to Drive!")
 
 if __name__ == "__main__":
-    dataset = "NEMA"
-    config = "configs/baseline.yaml"
-    # config = "configs/decision.yaml"
-    model_size = ["moment-small", "moment-base", "moment-large"]
-    # model_size = ["timesfm-base"]
-    model_features = [ "-zeroshot", "-finetuned","-lora"]
-    # model_features = ["-finetuned"]
-    model_list = []
-    for size in model_size:
-        for feature in model_features:
-            model_list.append(size + feature)
-    print("Running experiments for models:", model_list)
-    for model in model_list:
-        main(config, model, dataset, "2") 
+    # 2. Put argparse here so it only runs once when the script is executed
+    parser = argparse.ArgumentParser(description="Train a decision-focused model")
+    parser.add_argument("--config", type=str, default="configs/baseline.yaml", help="Path to config file")
+    parser.add_argument("--model", type=str, default=None, help="Model name and variation")
+    parser.add_argument("--dataset", type=str, default="NEMA", help="Dataset name")
+    parser.add_argument("--version", type=str, default="2", help="Version name")
+    args = parser.parse_args()
+
+    # 3. Logic to determine whether to run one model or the batch loop
+    if args.model is not None:
+        # If you passed a specific model in the terminal, run JUST that one
+        print(f"Running single experiment for model: {args.model}")
+        main(args.config, args.model, args.dataset, args.version)
+    else:
+        # If you didn't pass a model, run your hardcoded batch loop
+        model_size = ["moment-small", "moment-base", "moment-large"]
+        model_features = ["-zeroshot", "-finetuned", "-lora"]
+        
+        model_list = [size + feature for size in model_size for feature in model_features]
+        
+        print(f"Running batch experiments for models: {model_list}")
+        for current_model in model_list:
+            main(args.config, current_model, args.dataset, args.version)
