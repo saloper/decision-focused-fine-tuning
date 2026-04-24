@@ -67,6 +67,7 @@ To add a new model (or a new variant), update the following locations:
 │   ├── timesfm.ipynb
 │   └── plots/                 # Saved evaluation visualizations (e.g., cumulative profit plots)
 ├── results/                   # Evaluation results and interactive visualizations
+│   ├── experiments/           # Specific run artifacts (e.g., config.yaml, train.log)
 │   └── plots/                 # Interactive HTML training curves
 ├── scripts/
 │   ├── process_data.py        # Script for data processing pipelines
@@ -74,28 +75,26 @@ To add a new model (or a new variant), update the following locations:
 │   └── runexp.py              # Script for running specific experiments
 └── src/
     ├── dfft/                  # Main package source code
-    │   ├── data/
-    │   │   └── dataset.py     # PyTorch Dataset and DataLoader definitions
-    │   ├── models/            # Model architectures and formulations
-    │   │   ├── aribtrage.py   # Battery arbitrage optimization formulation
-    │   │   ├── base.py        # Base model classes
-    │   │   ├── moment.py      # MOMENT foundation model implementation
-    │   │   ├── momentLora.py  # LoRA fine-tuning wrappers for MOMENT
-    │   │   ├── moment_time.py 
-    │   │   └── timesfm.py     # TimesFM model implementation
-    │   ├── training/          # Training loops and model management
-    │   │   ├── model_registry.py 
-    │   │   ├── train.py       # Core training logic
-    │   │   └── trainer.py     # Trainer class implementation
-    │   ├── utils/
-    │   │   └── files.py       # Helper functions for file management
-    │   └── visualize/         # Code for generating plots and tables
-    │       ├── create_table.py
-    │       ├── plot_predictions.py
-    │       ├── plot_training.py
-    │       └── utils.py
-    └── results/               # Experiment logs, outputs, and run configurations
-        └── experiments/       # Specific run artifacts (e.g., config.yaml, train.log)
+       ├── data/
+       │   └── dataset.py     # PyTorch Dataset and DataLoader definitions
+       ├── models/            # Model architectures and formulations
+       │   ├── aribtrage.py   # Battery arbitrage optimization formulation
+       │   ├── base.py        # Base model classes
+       │   ├── moment.py      # MOMENT foundation model implementation
+       │   ├── momentLora.py  # LoRA fine-tuning wrappers for MOMENT
+       │   ├── moment_time.py 
+       │   └── timesfm.py     # TimesFM model implementation
+       ├── training/          # Training loops and model management
+       │   ├── model_registry.py 
+       │   ├── train.py       # Core training logic
+       │   └── trainer.py     # Trainer class implementation
+       ├── utils/
+       │   └── files.py       # Helper functions for file management
+       └── visualize/         # Code for generating plots and tables
+           ├── create_table.py
+           ├── plot_predictions.py
+           ├── plot_training.py
+           └── utils.py
 ```
 ## Project Resouces
 * [Overleaf Project](https://www.overleaf.com/project/6998cbc5d26b3d55e09f59fb)
