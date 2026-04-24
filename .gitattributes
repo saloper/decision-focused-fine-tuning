@@ -1,0 +1,5 @@
+# Ignore all HTML files from the language statistics
+*.html linguist-detectable=false
+
+# if you want Jupyter Notebooks to be counted as Python
+*.ipynb linguist-language=Python

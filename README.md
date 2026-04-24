@@ -49,25 +49,53 @@ To add a new model (or a new variant), update the following locations:
 
 ## Project Structure
 ```text
+├── .gitattributes
 ├── .gitignore
 ├── README.md
-├── pyproject.toml
+├── pyproject.toml             # Project metadata and dependencies
+├── setup_env.bat              # Environment setup script
 ├── configs/
-│   └── baseline.yaml          # Configuration files for training and data processing
+│   ├── baseline.yaml          # Configuration for baseline models
+│   └── decision.yaml          # Configuration for decision-focused learning runs
 ├── data/
-│   └── processed/
-│       └── NEMA_LMP.parquet   # Processed datasets 
+│   ├── processed/
+│   │   └── NEMA_LMP.parquet   # Processed NEMA locational marginal pricing dataset
+│   └── raw/                   # Raw hourly SMD data (2017-2026) for ISO-NE regions
+├── notebooks/                 # Jupyter notebooks for exploration and analysis
+│   ├── aggregate_metrics.ipynb
+│   ├── explore_metrics.ipynb
+│   ├── timesfm.ipynb
+│   └── plots/                 # Saved evaluation visualizations (e.g., cumulative profit plots)
+├── results/                   # Evaluation results and interactive visualizations
+│   └── plots/                 # Interactive HTML training curves
 ├── scripts/
 │   ├── process_data.py        # Script for data processing pipelines
-│   └── train.py               # Main training script
+│   ├── run.py                 # General execution script
+│   └── runexp.py              # Script for running specific experiments
 └── src/
-    └── dfft/                  # Main package source code
-        ├── data/
-        │   └── dataset.py     # PyTorch Dataset and DataLoader definitions
-        ├── models/
-        │   └── moment.py      # Model architectures and forward passes
-        └── utils/
-            └── files.py       # Helper functions for file management
+    ├── dfft/                  # Main package source code
+    │   ├── data/
+    │   │   └── dataset.py     # PyTorch Dataset and DataLoader definitions
+    │   ├── models/            # Model architectures and formulations
+    │   │   ├── aribtrage.py   # Battery arbitrage optimization formulation
+    │   │   ├── base.py        # Base model classes
+    │   │   ├── moment.py      # MOMENT foundation model implementation
+    │   │   ├── momentLora.py  # LoRA fine-tuning wrappers for MOMENT
+    │   │   ├── moment_time.py 
+    │   │   └── timesfm.py     # TimesFM model implementation
+    │   ├── training/          # Training loops and model management
+    │   │   ├── model_registry.py 
+    │   │   ├── train.py       # Core training logic
+    │   │   └── trainer.py     # Trainer class implementation
+    │   ├── utils/
+    │   │   └── files.py       # Helper functions for file management
+    │   └── visualize/         # Code for generating plots and tables
+    │       ├── create_table.py
+    │       ├── plot_predictions.py
+    │       ├── plot_training.py
+    │       └── utils.py
+    └── results/               # Experiment logs, outputs, and run configurations
+        └── experiments/       # Specific run artifacts (e.g., config.yaml, train.log)
 ```
 ## Project Resouces
 * [Overleaf Project](https://www.overleaf.com/project/6998cbc5d26b3d55e09f59fb)
