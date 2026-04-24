@@ -27,9 +27,9 @@ def main(config_path, model_name, dataset_name, version):
     # Create Run Directory
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if train_cfg['decision_loss']:
-        run_dir = os.path.join(paths_cfg["output_path"], model_name + "-decision", dataset_name, f"{timestamp}_v{version}_lr_{train_cfg['learning_rate']}")
+        run_dir = os.path.join(paths_cfg["output_path"], model_name + "-decision", dataset_name, f"{timestamp}_v{version}")
     else:
-        run_dir = os.path.join(paths_cfg["output_path"], model_name, dataset_name, f"{timestamp}_v{version}_lr_{train_cfg['learning_rate']}")
+        run_dir = os.path.join(paths_cfg["output_path"], model_name, dataset_name, f"{timestamp}_v{version}")
     os.makedirs(run_dir, exist_ok=True)
 
     # Setup Logging
