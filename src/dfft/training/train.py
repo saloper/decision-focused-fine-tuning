@@ -66,7 +66,7 @@ def run_training_experiment(run_dir, model_name, data_cfg, train_cfg, train_data
     model.to(device)
 
     # TensorBoard setup
-    tb_log_dir = os.path.join(run_dir, f"tensorboard", f"{version}_lr_{train_cfg['learning_rate']}")
+    tb_log_dir = os.path.join(run_dir, f"tensorboard", f"{version}")
     
     writer = SummaryWriter(log_dir=tb_log_dir)
 

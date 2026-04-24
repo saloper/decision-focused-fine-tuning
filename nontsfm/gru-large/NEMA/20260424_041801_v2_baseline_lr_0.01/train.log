@@ -1,0 +1,4 @@
+2026-04-24 04:18:03,269 - INFO - Starting Experiment: baseline
+2026-04-24 04:18:03,391 - INFO - Run directory created at: results/experiments/gru-large\NEMA\20260424_041801_v2_baseline_lr_0.01
+2026-04-24 04:18:03,706 - INFO - Using device: cuda
+2026-04-24 04:18:05,913 - INFO - Initializing gru-large...

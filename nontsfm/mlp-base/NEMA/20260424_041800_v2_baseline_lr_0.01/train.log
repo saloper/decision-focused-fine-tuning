@@ -1,0 +1,4 @@
+2026-04-24 04:18:01,634 - INFO - Starting Experiment: baseline
+2026-04-24 04:18:02,582 - INFO - Run directory created at: results/experiments/mlp-base\NEMA\20260424_041800_v2_baseline_lr_0.01
+2026-04-24 04:18:03,704 - INFO - Using device: cuda
+2026-04-24 04:18:04,746 - INFO - Initializing mlp-base...

@@ -150,6 +150,116 @@ def get_timesfm_model(size, model_type, config_kwargs):
         raise ValueError(f"Unknown TimesFM model_type: {model_type}")
 
 
+def get_classical_model(model_family, model_variant, config_kwargs):
+    """
+    Classical neural forecasting model factory.
+    Supported families: linear, mlp, lstm, gru, tcn
+    Example model names consumed by parser:
+      - mlp
+      - mlp-small
+      - lstm-base
+      - tcn-large
+    """
+    size_map = {
+        "small": {
+            "hidden_size": 64,
+            "hidden_channels": 32,
+            "num_layers": 1,
+            "dropout": 0.05,
+            "mlp_hidden_dims": [128, 64],
+        },
+        "base": {
+            "hidden_size": 128,
+            "hidden_channels": 64,
+            "num_layers": 2,
+            "dropout": 0.1,
+            "mlp_hidden_dims": [256, 128],
+        },
+        "large": {
+            "hidden_size": 256,
+            "hidden_channels": 128,
+            "num_layers": 3,
+            "dropout": 0.15,
+            "mlp_hidden_dims": [512, 256],
+        },
+    }
+
+    variant = (model_variant or "base").lower()
+    if variant not in size_map:
+        raise ValueError(f"Unknown classical model variant: {variant}")
+
+    preset = size_map[variant]
+    input_len = config_kwargs.get("input_len", 512)
+    output_len = config_kwargs.get("output_len", 24)
+    in_channels = config_kwargs.get("in_channels", 1)
+
+    if model_family == "linear":
+        from dfft.models.linear import LinearForecaster
+
+        model = LinearForecaster(
+            input_len=input_len,
+            output_len=output_len,
+            in_channels=in_channels,
+        )
+        return model, True
+
+    if model_family == "mlp":
+        from dfft.models.mlp import MLPForecaster
+
+        model = MLPForecaster(
+            input_len=input_len,
+            output_len=output_len,
+            in_channels=in_channels,
+            hidden_dims=config_kwargs.get("hidden_dims", preset["mlp_hidden_dims"]),
+            dropout=config_kwargs.get("dropout", preset["dropout"]),
+        )
+        return model, True
+
+    if model_family == "lstm":
+        from dfft.models.lstm import LSTMForecaster
+
+        model = LSTMForecaster(
+            input_len=input_len,
+            output_len=output_len,
+            input_dim=in_channels,
+            hidden_size=config_kwargs.get("hidden_size", preset["hidden_size"]),
+            num_layers=config_kwargs.get("num_layers", preset["num_layers"]),
+            dropout=config_kwargs.get("dropout", preset["dropout"]),
+            bidirectional=config_kwargs.get("bidirectional", False),
+        )
+        return model, True
+
+    if model_family == "gru":
+        from dfft.models.gru import GRUForecaster
+
+        model = GRUForecaster(
+            input_len=input_len,
+            output_len=output_len,
+            input_dim=in_channels,
+            hidden_size=config_kwargs.get("hidden_size", preset["hidden_size"]),
+            num_layers=config_kwargs.get("num_layers", preset["num_layers"]),
+            dropout=config_kwargs.get("dropout", preset["dropout"]),
+            bidirectional=config_kwargs.get("bidirectional", False),
+        )
+        return model, True
+
+    if model_family == "tcn":
+        from dfft.models.tcn import TCNForecaster
+
+        model = TCNForecaster(
+            input_len=input_len,
+            output_len=output_len,
+            in_channels=in_channels,
+            hidden_channels=config_kwargs.get("hidden_channels", preset["hidden_channels"]),
+            num_layers=config_kwargs.get("num_layers", preset["num_layers"] + 1),
+            kernel_size=config_kwargs.get("kernel_size", 3),
+            dropout=config_kwargs.get("dropout", preset["dropout"]),
+        )
+        return model, True
+
+    raise ValueError(f"Unknown classical model family: {model_family}")
+
+
 def get_model(model_name: str, config_kwargs: dict):
     # Modular parsing for MOMENT models
     if model_name.startswith("moment"):
@@ -187,6 +297,24 @@ def get_model(model_name: str, config_kwargs: dict):
             raise ValueError(f"Unknown TimesFM model name format: {model_name}")
 
         return get_timesfm_model(size, model_type, config_kwargs)
+
+    elif model_name.split("-")[0] in {"linear", "mlp", "lstm", "gru", "tcn"}:
+        # Supported formats:
+        # linear
+        # linear-small
+        # mlp-base
+        # lstm-large
+        parts = model_name.split("-")
+        family = parts[0]
+
+        if len(parts) == 1:
+            variant = "base"
+        elif len(parts) == 2:
+            variant = parts[1]
+        else:
+            raise ValueError(f"Unknown classical model name format: {model_name}")
+
+        return get_classical_model(family, variant, config_kwargs)
     else:
         raise ValueError(f"Unknown model variation selected: {model_name}.")
 
