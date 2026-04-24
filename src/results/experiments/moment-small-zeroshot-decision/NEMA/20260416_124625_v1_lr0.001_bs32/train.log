@@ -1,3 +1,0 @@
-2026-04-16 12:46:25,913 - INFO - Starting Experiment: baseline
-2026-04-16 12:46:25,915 - INFO - Run directory created at: results/experiments/moment-small-zeroshot-decision\NEMA\20260416_124625_v1_lr0.001_bs32
-2026-04-16 12:46:25,966 - INFO - Using device: cuda
