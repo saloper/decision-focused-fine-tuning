@@ -1,4 +1,0 @@
-2026-04-24 04:18:01,261 - INFO - Starting Experiment: baseline
-2026-04-24 04:18:01,281 - INFO - Run directory created at: results/experiments/linear-large\NEMA\20260424_041800_v2_baseline_lr_0.01
-2026-04-24 04:18:03,710 - INFO - Using device: cuda
-2026-04-24 04:18:05,913 - INFO - Initializing linear-large...

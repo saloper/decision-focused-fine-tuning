@@ -1,4 +1,0 @@
-2026-04-24 04:25:19,169 - INFO - Starting Experiment: baseline
-2026-04-24 04:25:19,176 - INFO - Run directory created at: results/experiments/tcn-large\NEMA\20260424_042518_v2_baseline_lr_0.001
-2026-04-24 04:25:19,255 - INFO - Using device: cuda
-2026-04-24 04:25:27,990 - INFO - Initializing tcn-large...
