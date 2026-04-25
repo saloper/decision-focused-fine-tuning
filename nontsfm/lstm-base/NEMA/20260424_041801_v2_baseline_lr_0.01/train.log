@@ -1,4 +1,0 @@
-2026-04-24 04:18:03,044 - INFO - Starting Experiment: baseline
-2026-04-24 04:18:03,207 - INFO - Run directory created at: results/experiments/lstm-base\NEMA\20260424_041801_v2_baseline_lr_0.01
-2026-04-24 04:18:03,696 - INFO - Using device: cuda
-2026-04-24 04:18:04,399 - INFO - Initializing lstm-base...

@@ -1,4 +1,0 @@
-2026-04-24 04:18:02,972 - INFO - Starting Experiment: baseline
-2026-04-24 04:18:03,207 - INFO - Run directory created at: results/experiments/gru-small\NEMA\20260424_041801_v2_baseline_lr_0.01
-2026-04-24 04:18:03,703 - INFO - Using device: cuda
-2026-04-24 04:18:04,712 - INFO - Initializing gru-small...
